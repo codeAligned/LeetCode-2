@@ -1,5 +1,31 @@
 __author__ = 'le0nh@rdt'
 
+#Pascal's Triangle II
+class Solution:
+    # @return a list of integers
+    def getRow(self, rowIndex):
+        count = 0
+
+        if rowIndex == 0: return [1]
+
+        list_odd = [1 for i in xrange(rowIndex + 1)]
+        list_even = [1 for i in xrange(rowIndex + 1)]
+
+        for i in xrange(2, rowIndex+1):
+            if i%2 == 0:
+                for j in xrange(1, i):
+                    list_even[j] = list_odd[j-1] + list_odd[j]
+            elif i%2 == 1:
+                for j in xrange(1, i):
+                    list_odd[j] = list_even[j-1] + list_even[j]
+
+        if rowIndex % 2 == 0: return list_even
+        else: return list_odd
+
+
+
+
+
 # Binary Tree Level Order Traversal
 # Definition for a  binary tree node
 # class TreeNode:
