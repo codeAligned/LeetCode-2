@@ -1,6 +1,47 @@
 __author__ = 'le0nh@rdt'
 
-#Pascal's Triangle II
+# populating-next-right-pointers-in-each-node-ii
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+#         self.next = None
+
+class Solution:
+    # @param root, a tree node
+    # @return nothing
+    def connect(self, root):
+        curr = root
+        nextLevelHead = None
+        nextLevelEnd = None
+        while curr:
+            if curr.left:
+                if nextLevelHead:
+                    nextLevelEnd.next = curr.left
+                    nextLevelEnd = nextLevelEnd.next
+                else:
+                    nextLevelHead = curr.left
+                    nextLevelEnd = nextLevelHead
+            if curr.right:
+                if nextLevelHead:
+                    nextLevelEnd.next = curr.right
+                    nextLevelEnd = nextLevelEnd.next
+                else:
+                    nextLevelHead = curr.right
+                    nextLevelEnd = nextLevelHead
+            curr = curr.next
+            if not curr:
+                curr = nextLevelHead
+                nextLevelHead = None
+                nextLevelEnd = None
+
+
+
+
+
+# Pascal's Triangle II
 class Solution:
     # @return a list of integers
     def getRow(self, rowIndex):
