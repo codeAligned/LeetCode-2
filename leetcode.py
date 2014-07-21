@@ -1,6 +1,29 @@
 __author__ = 'le0nh@rdt'
 
 
+# Palindrome Partitioning 
+class Solution:
+    # @param s, a string
+    # @return a list of lists of string
+    def partition(self, s):
+        self.res = []
+        self.dfs(s, [])
+        return self.res
+        
+    def isPalindrome(self, s):
+        if s == s[::-1]: return True
+        return False
+    
+    def dfs(self, s, stringlist):
+        if len(s) == 0:
+            self.res.append(stringlist)
+        for i in xrange(1, len(s)+1):
+            if self.isPalindrome(s[:i]):
+                self.dfs(s[i:],stringlist+[s[:i]])
+                
+            
+                
+
 # n-queens
 class Solution:
     # @return a list of lists of string
