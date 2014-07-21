@@ -1,5 +1,70 @@
 __author__ = 'le0nh@rdt'
 
+
+# n-queens
+class Solution:
+    # @return a list of lists of string
+    def solveNQueens(self, n):
+        self.res = []
+        self.solve(n, 0, [-1 for i in xrange(n)])
+        return self.res
+        
+    def solve(self, n, currQueen, board):
+        if currQueen == n:
+            oneAnsw = [['.' for i in xrange(n)] for j in xrange(n)]
+            for i in xrange(n):
+                oneAnsw[i][board[i]] = 'Q'
+                oneAnsw[i] = ''.join(oneAnsw[i])
+            self.res.append(oneAnsw)
+            return
+        for i in xrange(n):
+            valid = True
+            for k in xrange(currQueen):
+                if board[k] == i:
+                    valid = False; break
+                if abs(board[k] - i) == currQueen - k:
+                    valid = False; break
+            if valid:
+                board[currQueen] = i
+                self.solve(n , currQueen + 1, board)
+
+
+
+# reverse-linked-list-ii
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param head, a ListNode
+    # @param m, an integer
+    # @param n, an integer
+    # @return a ListNode
+    def reverseBetween(self, head, m, n):
+        if head == None or head.next == None: return head
+        dummy = ListNode(0)
+        dummy.next = head
+        
+        h1 = dummy
+        for i in xrange(m-1):
+            h1 = h1.next
+        
+        p = h1.next
+        
+        for i in xrange(m, n):
+            tmp = h1.next
+            h1.next = p.next
+            p.next = p.next.next
+            h1.next.next = tmp
+            
+        return dummy.next
+            
+
+
+
+
 # construct-binary-tree-from-preorder-and-inorder-traversal/
 
 # populating-next-right-pointers-in-each-node-ii
