@@ -1,6 +1,63 @@
 __author__ = 'le0nh@rdt'
 
 
+
+
+
+
+
+
+# Validate Binary Search Tree
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return a boolean
+    def isValidBST(self, root):
+        self.minimumNum = -10000000
+        return self.solve(root)
+        
+    def solve(self, root):
+        if root == None: return True
+        
+        if not self.solve(root.left): return False
+        if root.val <= self.minimumNum: return False
+        self.minimumNum = root.val
+        if not self.solve(root.right): return False
+        
+        return True
+
+
+
+
+
+# Next Permutation 
+class Solution:
+    # @param num, a list of integer
+    # @return a list of integer
+    def nextPermutation(self, num):
+        for i in xrange(len(num)-2 , -1 , -1):
+            if num[i] < num[i+1]:
+                flag = i
+                break
+        if flag == -1: num.reverse(); return num
+        else:
+            for i in xrange(len(num)-1, flag,-1):
+                if num[i] > num[flag]:
+                    num[i], num[flag] = num[flag], num[i]
+                    break
+        num[flag+1:] = num[flag+1:][::-1]
+        return num
+
+
+
+
+
 # Palindrome Partitioning 
 class Solution:
     # @param s, a string
