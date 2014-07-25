@@ -1,4 +1,85 @@
 __author__ = 'le0nh@rdt'
+# Max Points in a Line
+# Definition for a point
+# class Point:
+#     def __init__(self, a=0, b=0):
+#         self.x = a
+#         self.y = b
+
+class Solution:
+    # @param points, a list of Points
+    # @return an integer
+    def maxPoints(self, points):
+        if len(points) < 3: return len(points)
+        res = -1
+        
+        for i in xrange(len(points)):
+            slope = {"infinite": 0}
+            duplicated = 1
+            for j in xrange(len(points)):
+                if i == j: continue
+                elif points[j].x == points[i].x and points[j].y != points[i].y:
+                    # slope is infinite
+                    slope["infinite"] += 1
+                elif points[j].x != points[i].x:
+                    k = (points[j].y - points[i].y) / (points[j].x - points[i].x)
+                    if k in slope:
+                        slope[k] += 1
+                    else:
+                        slope[k] = 1
+                else:
+                    #duplicated points
+                    duplicated += 1
+            res = max(res, max(slope.values()) + duplicated)
+        return res
+        
+        
+
+
+# Permutation II 
+# duplicated number in list, sort first
+class Solution:
+    # @param num, a list of integer
+    # @return a list of lists of integers
+    def permuteUnique(self, num):
+        if len(num) == 0: return []
+        if len(num) == 1: return [num]
+        num.sort()
+        res = []
+        prev = None
+        for i in xrange(len(num)):
+            if num[i] == prev: continue
+            prev = num[i]
+            for j in self.permuteUnique(num[:i]+num[i+1:]):
+                res.append(j+[num[i]])
+            
+        return res
+
+
+
+
+
+# Gas Station
+class Solution:
+    # @param gas, a list of integers
+    # @param cost, a list of integers
+    # @return an integer
+    def canCompleteCircuit(self, gas, cost):
+        
+        length = len(gas)
+        sum = 0; total = 0
+        k = -1
+        for i in xrange(length):
+            sum += gas[i] - cost[i]
+            total += gas[i] - cost[i]
+            if sum < 0:
+                k = i
+                sum = 0
+                
+        return k+1 if total >= 0 else -1
+            
+            
+
 
 
 # Insertion Sort List
