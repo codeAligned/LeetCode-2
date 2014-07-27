@@ -1,4 +1,28 @@
 __author__ = 'le0nh@rdt'
+# Combination Sum II
+class Solution:
+    # @param candidates, a list of integers
+    # @param target, integer
+    # @return a list of lists of integers
+    def combinationSum2(self, candidates, target):
+        self.res = []
+        # must sort the list first in this way of solution.
+        candidates.sort()
+        self.recur(candidates, target, 0, [])
+        return self.res
+        
+    def recur(self, candidates, target, start, ret):
+        if target == 0 and ret not in self.res:
+            return self.res.append(ret)
+        for i in xrange(start, len(candidates)):
+            if target < candidates[i]:
+                return
+            self.recur(candidates, target - candidates[i], i + 1, ret + [candidates[i]])
+
+
+
+
+
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
