@@ -1,4 +1,34 @@
 __author__ = 'le0nh@rdt'
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param head, a ListNode
+    # @return a ListNode
+    def deleteDuplicates(self, head):
+        if head == None or head.next == None: return head
+        dummy = ListNode(0); dummy.next = head
+        p = dummy
+        q = dummy.next
+        
+        while p.next:
+            while q.next and q.next.val == p.next.val:
+                q = q.next
+            if q == p.next:
+                p = p.next
+                q = p.next
+            else:
+                p.next = q.next
+        
+        return dummy.next
+
+
+
+
+
 # Max Points in a Line
 # Definition for a point
 # class Point:
