@@ -1,4 +1,53 @@
 __author__ = 'le0nh@rdt'
+
+
+
+
+
+
+# Jump Game II
+# Always try the NEXT furthest jump.
+class Solution:
+    # @param A, a list of integers
+    # @return an integer
+    def jump(self, A):
+        if len(A) == 1: return 0
+        
+        longest = 0
+        count = 0
+        
+        while True:
+            count += 1
+            for tmp in xrange(longest+1):
+                longest = max(longest, tmp + A[tmp])
+                if longest >= len(A) - 1:
+                    return count
+
+
+
+
+# Distinct Subsequences 
+class Solution:
+    # @return an integer
+    def numDistinct(self, S, T):
+        dp = [[0 for i in xrange(len(T) + 1)] for j in xrange(len(S) + 1)]
+        # null is the substring of any string, so if the length of T len(T) is 0, result is 1
+        for i in xrange(len(S) + 1):
+            dp[i][0] = 1
+        
+        for i in xrange(1, len(S)+1):
+            for j in xrange(1, min(i+1, len(T)+1)):
+                if S[i-1] == T[j-1]:
+                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+                else:
+                    dp[i][j] = dp[i-1][j]
+        
+        return dp[len(S)][len(T)]        
+
+
+
+
+
 # Combination Sum II
 class Solution:
     # @param candidates, a list of integers
