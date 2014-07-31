@@ -1,4 +1,78 @@
 __author__ = 'le0nh@rdt'
+
+# Copy List with Random Pointer 
+# Definition for singly-linked list with a random pointer.
+# class RandomListNode:
+#     def __init__(self, x):
+#         self.label = x
+#         self.next = None
+#         self.random = None
+
+class Solution:
+    # @param head, a RandomListNode
+    # @return a RandomListNode
+    def copyRandomList(self, head):
+        if head == None: return None
+        p = head
+        count = 0
+        while p:
+            # create a new node and insert between p and p.next
+            t = RandomListNode(0)
+            t.next = p.next
+            t.random = p.random
+            t.label = p.label
+            p.next = t
+            p = t.next
+            count += 1
+        
+        p = head.next
+        
+        for i in xrange(count):
+            if p.random: p.random = p.random.next
+            if p and p.next: p=p.next.next
+        
+        p1, p2, newHead = head, head.next, head.next
+        for i in xrange(count-1):
+            p1.next, p2.next = p1.next.next, p2.next.next
+            p1, p2 = p1.next, p2.next
+        p1.next, p2.next = None, None
+        
+        return newHead
+        
+            
+        
+
+
+# Recover Binary Search Tree
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return a tree node
+    def recoverTree(self, root):
+        list = []
+        listpointer = []
+        self.inorder(root, list, listpointer)
+        list.sort()
+        for i in xrange(len(list)):
+            listpointer[i].val = list[i]
+        return root
+        
+    def inorder(self, root, list, listpointer):
+        if root:
+            self.inorder(root.left, list, listpointer)
+            list.append(root.val)
+            listpointer.append(root)
+            self.inorder(root.right, list, listpointer)
+
+
+
+
 # Zigzag Conversion
 class Solution:
     # @return a string
