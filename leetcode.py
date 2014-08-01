@@ -1,5 +1,66 @@
 __author__ = 'le0nh@rdt'
 
+
+# Valid Palindrome
+class Solution:
+    # @param s, a string
+    # @return a boolean
+    def isPalindrome(self, s):
+        if len(s) <= 1: return True
+        s1 = self.cleanup(s.lower())
+        s2 = s1[::-1]
+        if s1 == s2:
+            return True
+        else:
+            return False
+            
+    def cleanup(self, s):
+        alphanumeric = "zxcvbnmlkjhgfdsaqwertyuiop1234567890"
+        cleaned = ""
+        for i in s:
+            if i in alphanumeric:
+                cleaned += i
+        return cleaned
+
+
+# Add Two Numbers
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @return a ListNode
+    def addTwoNumbers(self, l1, l2):
+        if l1 == None: return l2
+        elif l2 == None: return l1
+        
+        p = l1; q = l2
+        dummy = ListNode(0); s = dummy; carry = 0
+        
+        while p or q:
+            if p != None:
+                if q != None:
+                    curr = p.val + q.val + carry
+                    p = p.next; q = q.next
+                else:
+                    curr = p.val + carry
+                    p = p.next
+            else:
+                if q != None: 
+                    curr = q.val + carry
+                    q = q.next
+            
+            s.next = ListNode(curr % 10)
+            carry = curr / 10
+            s = s.next
+                
+        if carry > 0:
+            s.next = ListNode(carry)
+        return dummy.next
+        
+        
 # Copy List with Random Pointer
 # Definition for singly-linked list with a random pointer.
 # class RandomListNode:
