@@ -1,4 +1,63 @@
 __author__ = 'le0nh@rdt'
+# First Missing Positive
+
+
+# First Missing Positive (My solution)
+class Solution:
+    # @param A, a list of integers
+    # @return an integer
+    def firstMissingPositive(self, A):
+        B = list(set(A))
+        B.sort()
+        i = 0
+        while i < len(B) - 1:
+            if B[i+1] != B[i] + 1:
+                if B[i+1] < 1:
+                    i += 1; continue
+                elif B[i+1] > 1:
+                    if  B[i] < 0:
+                        return 1
+                    elif B[i] >= 0:
+                        return B[i] + 1
+                elif B[i+1] == 1:
+                    return self.getFirstPos(i+1 ,B)
+            i += 1
+        return B[-1] + 1 if B[-1] >= 0 else 1
+    
+    def getFirstPos(self, start, B):
+        for i in xrange(start, len(B)-1):
+            if B[i+1] != B[i] + 1:
+                return B[i] + 1
+        return B[-1] + 1
+
+
+# Clone Graph
+# Definition for a undirected graph node
+# class UndirectedGraphNode:
+#     def __init__(self, x):
+#         self.label = x
+#         self.neighbors = []
+
+class Solution:
+    # @param node, a undirected graph node
+    # @return a undirected graph node
+    def cloneGraph(self, node):
+        if node == None: return node
+        nodeMap = {}
+        return self.cloneNode(node, nodeMap)
+    
+    def cloneNode(self, node, nodeMap):
+        if node == None: return node
+        if nodeMap.has_key(node):
+            return nodeMap[node]
+        else:
+            clone = UndirectedGraphNode(node.label)
+            nodeMap[node] = clone
+            for neighbor in node.neighbors:
+                clone.neighbors.append(self.cloneNode(neighbor, nodeMap))
+        return clone
+
+
 # Valid Number
 class Solution:
     # @param s, a string
