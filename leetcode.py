@@ -3,6 +3,7 @@ __author__ = 'le0nh@rdt'
 
 
 # First Missing Positive (My solution)
+# 编译错误，似乎是LeetCode不允许使用set method
 class Solution:
     # @param A, a list of integers
     # @return an integer
