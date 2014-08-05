@@ -1,12 +1,112 @@
 __author__ = 'le0nh@rdt'
 ##################################################
-
+# 12. Sort Colors
+class Solution:
+    # @param A a list of integers
+    # @return nothing, sort in place
+    def sortColors(self, A):
+        if len(A) == 1: return A
+        i = 0; j = len(A)-1
+        p = 0
+        while p <= j:
+            if A[p] == 0:
+                A[i], A[p] = A[p], A[i]
+                i += 1; p += 1
+            elif A[p] == 2:
+                A[p], A[j] = A[j], A[p]
+                j -= 1
+            else:
+                p += 1
 
 ##################################################
-
+# 11. N Queens II
+class Solution:
+    # @return an integer
+    def totalNQueens(self, n):
+        self.res = 0
+        self.solve(n, 0, [-1 for i in xrange(n)])
+        return self.res
+        
+    def solve(self, n, currQ, B):
+        if currQ == n:
+            self.res += 1
+            return
+        for j in xrange(n):
+            valid = True
+            for i in xrange(currQ):
+                if B[i] == j: valid = False; break
+                if abs(B[i] - j) == currQ - i: valid = False; break
+            if valid:
+                B[currQ] = j
+                self.solve(n, currQ + 1, B)
 
 ##################################################
-# Remove Duplicate from Sorted Array
+# 10. Merge Tow Sorted Array (correct locally, no idea why online judge says wrong answer)
+class Solution:
+    # @param A  a list of integers
+    # @param m  an integer, length of A
+    # @param B  a list of integers
+    # @param n  an integer, length of B
+    # @return nothing
+    def merge(self, A, m, B, n):
+        if m == 0: A += B
+        elif n > 0:
+            i = 0; j = 0
+            while j < n:
+                if B[j] <= A[i]:
+                    A.insert(i, B[j])
+                    j += 1; i+= 1
+                else:
+                    if i >= m+j-1:
+                        A += B[j:]; break
+                    else: i += 1
+# 从后往前排
+class Solution:
+    # @param A  a list of integers
+    # @param m  an integer, length of A
+    # @param B  a list of integers
+    # @param n  an integer, length of B
+    # @return nothing
+    def merge(self, A, m, B, n):
+        i, j, k = m - 1, n - 1, m + n - 1
+        while i >= 0 and j >= 0:
+            if B[j] > A[i]:
+                A[k] = B[j]
+                j -= 1
+            else:
+                A[k] = A[i]
+                i -= 1
+            k -= 1
+        while j >= 0:
+            A[k] = B[j]
+            j -= 1
+            k -= 1
+
+##################################################
+# 9. Symmetric Tree
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return a boolean
+    def isSymmetric(self, root):
+        if root == None: return True
+        return self.dfs(root.left, root.right)
+    
+    def dfs(self, leftNode, rightNode):
+        if leftNode == None and rightNode == None: return True
+        elif leftNode != None and rightNode != None:
+            if leftNode.val != rightNode.val: return False
+            else: return self.dfs(leftNode.left, rightNode.right) and self.dfs(leftNode.right, rightNode.left)
+        else: return False
+
+##################################################
+# 8. Remove Duplicate from Sorted Array
 class Solution:
     # @param a list of integers
     # @return an integer
@@ -26,7 +126,7 @@ class Solution:
         return curr + 1
 
 ##################################################
-# Swap Nodes in Pairs
+# 7. Swap Nodes in Pairs
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -55,7 +155,7 @@ class Solution:
         
 
 ##################################################
-# Balanced Binary Tree
+# 6. Balanced Binary Tree
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -79,7 +179,7 @@ class Solution:
 
 
 ##################################################
-# Merge Tow Sorted List
+# 5. Merge Tow Sorted List
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -111,7 +211,7 @@ class Solution:
 
 
 ##################################################
-# return the number of different ways to climb stairs, each level can move
+# 4. return the number of different ways to climb stairs, each level can move
 # 4 steps at most.
 
 
@@ -139,7 +239,7 @@ def initArray(resArray):
     return resArray
 
 ##################################################
-# Interview question 1
+# 3. Interview question 1
 # change the nth digit of binary value of an integer to 1
 
 
@@ -152,7 +252,7 @@ def solution(a, offset):
         return a ^ xorVal
 
 ##################################################
-# Insertion Sort List
+# 2. Insertion Sort List
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -185,7 +285,7 @@ class Solution:
         return dummy.next
 
 ##################################################
-# Reverse Nodes in k-Group
+# 1. Reverse Nodes in k-Group
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
