@@ -1,32 +1,288 @@
 __author__ = 'le0nh@rdt'
-##################################################
+# =============== Mistake List ===================
+# 17. Permutation: Should return [num] instead of num when len(num) == 1
+# 18. Search Matrix: use global index to simplify searching procedure
+# 19. Best Time to Buy and Sell Stock: keep track of two value: topPrice
+# and maxProfit. Traverse backward.
+# =============== Submit Record ==================
+# 21. One-time pass
+# 22. 
+# ================================================
+#
+# 22. 
+
+
+#
+# 21. Binary Tree Level Order Traversal II
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return a list of lists of integers
+    def levelOrderBottom(self, root):
+       if root == None: return []
+       self.res = []
+       self.dfs(0, root)
+       self.res.reverse()
+       return self.res
+      
+    def dfs(self, level, root):
+        if root == None: return
+        if level == len(self.res):
+            self.res.append([root.val])
+        else:
+            self.res[level].append(root.val)
+        self.dfs(level+1, root.left)
+        self.dfs(level+1, root.right)
+
+#
+# 20. Minimum Path Sum
+
+
+class Solution:
+    # @param grid, a list of lists of integers
+    # @return an integer
+
+    def minPathSum(self, grid):
+        if len(grid) == 0:
+            return 0
+
+        m = len(grid)
+        n = len(grid[0])
+
+        # initialize first line and first row
+        for i in xrange(1, m):
+            grid[i][0] += grid[i - 1][0]
+        for j in xrange(1, n):
+            grid[0][j] += grid[0][j - 1]
+
+        for i in xrange(1, m):
+            for j in xrange(1, n):
+                grid[i][j] += min(grid[i - 1][j], grid[i][j - 1])
+
+        return grid[-1][-1]
+
+#
+# 19. Best Time to Buy and Sell Stock
+
+
+class Solution:
+    # @param prices, a list of integer
+    # @return an integer
+
+    def maxProfit(self, prices):
+        if len(prices) < 2:
+            return 0
+
+        highestPrice = prices[-1]
+        maxProfit = 0
+
+        for i in xrange(len(prices) - 2, -1, -1):
+            profit = highestPrice - prices[i]
+            maxProfit = max(maxProfit, profit)
+            highestPrice = max(highestPrice, prices[i])
+
+        return maxProfit
+
+#
+# 18. Search Matrix
+
+
+class Solution:
+    # @param matrix, a list of lists of integers
+    # @param target, an integer
+    # @return a boolean
+
+    def searchMatrix(self, matrix, target):
+        m = len(matrix)
+        if m < 1:
+            return False
+
+        n = len(matrix[0])
+        start = 0
+        end = m * n - 1
+
+        while start <= end:
+            mid = (start + end) // 2
+            i = mid // n
+            j = mid % n
+            if matrix[i][j] > target:
+                end = mid - 1
+            elif matrix[i][j] < target:
+                start = mid + 1
+            else:
+                return True
+        return False
+
+#
+# 17. Permutation
+
+
+class Solution:
+    # @param num, a list of integer
+    # @return a list of lists of integers
+
+    def permute(self, num):
+        if len(num) == 0:
+            []
+        if len(num) == 1:
+            return [num]
+        res = []
+        for i in xrange(len(num)):
+            for j in self.permute(num[:i] + num[i + 1:]):
+                res.append([num[i]] + j)
+
+        return res
+
+#
+# 16. Plus One
+
+
+class Solution:
+    # @param digits, a list of integer digits
+    # @return a list of integer digits
+
+    def plusOne(self, digits):
+        res = [0 for i in xrange(len(digits) + 1)]
+        if digits[-1] == 9:
+            res[-1] = 0
+            carr = 1
+        else:
+            res[-1] = digits[-1] + 1
+            carr = 0
+
+        if len(digits) >= 2:
+            for i in xrange(len(digits) - 2, -1, -1):
+                if digits[i] + carr > 9:
+                    carr = 1
+                    res[i + 1] = 0
+                else:
+                    res[i + 1] = digits[i] + carr
+                    carr = 0
+
+        res[0] = carr
+        if carr == 0:
+            return res[1:]
+        else:
+            return res
+
+#
+# 15. Rotate Image
+
+
+class Solution:
+    # @param matrix, a list of lists of integers
+    # @return a list of lists of integers
+
+    def rotate(self, matrix):
+        n = len(matrix)
+        m = n // 2
+        for i in xrange(m):
+            for j in xrange(m):
+                self.rotateMatrix(i, j, matrix)
+
+        if n % 2 == 1:
+            for i in xrange(m):
+                j = m
+                self.rotateMatrix(i, j, matrix)
+
+        return matrix
+
+    def rotateMatrix(self, i, j, matrix):
+        n = len(matrix)
+        matrix[i][j], matrix[j][n - 1 - i], matrix[n - 1 - i][n - 1 - j], matrix[n - 1 - j][i] = \
+            matrix[n - 1 - j][i], matrix[i][j], matrix[
+                j][n - 1 - i], matrix[n - 1 - i][n - 1 - j]
+
+#
+# 14. Generate Parenthnese
+
+
+class Solution:
+    # @param an integer
+    # @return a list of string
+
+    def generateParenthesis(self, n):
+        return self.dfs(0, 0, n)
+
+    def dfs(self, left, right, n):
+        if left == n:
+            return [")" * (left - right)]
+        elif left == right:
+            return ["(" + i for i in self.dfs(left + 1, right, n)]
+        else:
+            return ["(" + i for i in self.dfs(left + 1, right, n)] + [")" + i for i in self.dfs(left, right + 1, n)]
+
+#
+# 13. Pascal Triangle
+
+
+class Solution:
+    # @return a list of lists of integers
+
+    def generate(self, numRows):
+        if numRows == 0:
+            return []
+        if numRows == 1:
+            return [[1]]
+        if numRows == 2:
+            return [[1], [1, 1]]
+
+        res = [[1], [1, 1]]
+        for i in xrange(2, numRows):
+            temp = []
+            temp.append(1)
+            length = len(res[i - 1])
+
+            for j in xrange(0, length - 1):
+                temp.append(res[i - 1][j] + res[i - 1][j + 1])
+            temp.append(1)
+
+            res.append(temp)
+        return res
+
+#
 # 12. Sort Colors
+
+
 class Solution:
     # @param A a list of integers
     # @return nothing, sort in place
+
     def sortColors(self, A):
-        if len(A) == 1: return A
-        i = 0; j = len(A)-1
+        if len(A) == 1:
+            return A
+        i = 0
+        j = len(A) - 1
         p = 0
         while p <= j:
             if A[p] == 0:
                 A[i], A[p] = A[p], A[i]
-                i += 1; p += 1
+                i += 1
+                p += 1
             elif A[p] == 2:
                 A[p], A[j] = A[j], A[p]
                 j -= 1
             else:
                 p += 1
 
-##################################################
+#
 # 11. N Queens II
+
+
 class Solution:
     # @return an integer
+
     def totalNQueens(self, n):
         self.res = 0
         self.solve(n, 0, [-1 for i in xrange(n)])
         return self.res
-        
+
     def solve(self, n, currQ, B):
         if currQ == n:
             self.res += 1
@@ -34,39 +290,55 @@ class Solution:
         for j in xrange(n):
             valid = True
             for i in xrange(currQ):
-                if B[i] == j: valid = False; break
-                if abs(B[i] - j) == currQ - i: valid = False; break
+                if B[i] == j:
+                    valid = False
+                    break
+                if abs(B[i] - j) == currQ - i:
+                    valid = False
+                    break
             if valid:
                 B[currQ] = j
                 self.solve(n, currQ + 1, B)
 
-##################################################
-# 10. Merge Tow Sorted Array (correct locally, no idea why online judge says wrong answer)
+#
+# 10. Merge Tow Sorted Array (correct locally, no idea why online judge
+# says wrong answer)
+
+
 class Solution:
     # @param A  a list of integers
     # @param m  an integer, length of A
     # @param B  a list of integers
     # @param n  an integer, length of B
     # @return nothing
+
     def merge(self, A, m, B, n):
-        if m == 0: A += B
+        if m == 0:
+            A += B
         elif n > 0:
-            i = 0; j = 0
+            i = 0
+            j = 0
             while j < n:
                 if B[j] <= A[i]:
                     A.insert(i, B[j])
-                    j += 1; i+= 1
+                    j += 1
+                    i += 1
                 else:
-                    if i >= m+j-1:
-                        A += B[j:]; break
-                    else: i += 1
+                    if i >= m + j - 1:
+                        A += B[j:]
+                        break
+                    else:
+                        i += 1
 # 从后往前排
+
+
 class Solution:
     # @param A  a list of integers
     # @param m  an integer, length of A
     # @param B  a list of integers
     # @param n  an integer, length of B
     # @return nothing
+
     def merge(self, A, m, B, n):
         i, j, k = m - 1, n - 1, m + n - 1
         while i >= 0 and j >= 0:
@@ -82,7 +354,7 @@ class Solution:
             j -= 1
             k -= 1
 
-##################################################
+#
 # 9. Symmetric Tree
 # Definition for a  binary tree node
 # class TreeNode:
@@ -91,28 +363,40 @@ class Solution:
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
     # @param root, a tree node
     # @return a boolean
-    def isSymmetric(self, root):
-        if root == None: return True
-        return self.dfs(root.left, root.right)
-    
-    def dfs(self, leftNode, rightNode):
-        if leftNode == None and rightNode == None: return True
-        elif leftNode != None and rightNode != None:
-            if leftNode.val != rightNode.val: return False
-            else: return self.dfs(leftNode.left, rightNode.right) and self.dfs(leftNode.right, rightNode.left)
-        else: return False
 
-##################################################
+    def isSymmetric(self, root):
+        if root == None:
+            return True
+        return self.dfs(root.left, root.right)
+
+    def dfs(self, leftNode, rightNode):
+        if leftNode == None and rightNode == None:
+            return True
+        elif leftNode != None and rightNode != None:
+            if leftNode.val != rightNode.val:
+                return False
+            else:
+                return self.dfs(leftNode.left, rightNode.right) and self.dfs(leftNode.right, rightNode.left)
+        else:
+            return False
+
+#
 # 8. Remove Duplicate from Sorted Array
+
+
 class Solution:
     # @param a list of integers
     # @return an integer
+
     def removeDuplicates(self, A):
-        if len(A) == 0: return 0
-        if len(A) == 1: return 1
+        if len(A) == 0:
+            return 0
+        if len(A) == 1:
+            return 1
 
         curr = 0
         next = 1
@@ -125,7 +409,7 @@ class Solution:
                 next += 1
         return curr + 1
 
-##################################################
+#
 # 7. Swap Nodes in Pairs
 # Definition for singly-linked list.
 # class ListNode:
@@ -133,28 +417,32 @@ class Solution:
 #         self.val = x
 #         self.next = None
 
+
 class Solution:
     # @param a ListNode
     # @return a ListNode
+
     def swapPairs(self, head):
         if head == None or head.next == None:
             return head
         dummy = ListNode(0)
         dummy.next = head
-        
+
         flag = dummy
         while flag.next and flag.next.next:
-            p = flag.next; q = p.next; t = q.next
+            p = flag.next
+            q = p.next
+            t = q.next
             flag.next = q
             p.next = q.next
             q.next = p
             p.next = t
             flag = p
-            
-        return dummy.next
-        
 
-##################################################
+        return dummy.next
+
+
+#
 # 6. Balanced Binary Tree
 # Definition for a  binary tree node
 # class TreeNode:
@@ -166,19 +454,21 @@ class Solution:
 class Solution:
     # @param root, a tree node
     # @return a boolean
+
     def isBalanced(self, root):
-        if root == None: return True
+        if root == None:
+            return True
         return self.checkBalanced(root)[1]
-        
+
     def checkBalanced(self, root):
         if root == None:
             return (0, True)
         LeftHeight, LeftBool = self.checkBalanced(root.left)
         RightHeight, RightBool = self.checkBalanced(root.right)
-        return (max(LeftHeight, RightHeight)+1, LeftBool and RightBool and abs(LeftHeight - RightHeight) <= 1)
+        return (max(LeftHeight, RightHeight) + 1, LeftBool and RightBool and abs(LeftHeight - RightHeight) <= 1)
 
 
-##################################################
+#
 # 5. Merge Tow Sorted List
 # Definition for singly-linked list.
 # class ListNode:
@@ -189,6 +479,7 @@ class Solution:
 class Solution:
     # @param two ListNodes
     # @return a ListNode
+
     def mergeTwoLists(self, l1, l2):
         dummy = ListNode(0)
         curr = dummy
@@ -196,21 +487,23 @@ class Solution:
         q = l2
         while p != None and q != None:
             if p.val < q.val:
-                curr.next = p; curr = curr.next
+                curr.next = p
+                curr = curr.next
                 p = p.next
             else:
-                curr.next = q; curr = curr.next
+                curr.next = q
+                curr = curr.next
                 q = q.next
-        
+
         if p == None and q != None:
             curr.next = q
         elif p != None and q == None:
             curr.next = p
-        
+
         return dummy.next
 
 
-##################################################
+#
 # 4. return the number of different ways to climb stairs, each level can move
 # 4 steps at most.
 
@@ -238,7 +531,7 @@ def initArray(resArray):
         resArray[4] = resArray[3] + resArray[2] + resArray[1] + resArray[0]
     return resArray
 
-##################################################
+#
 # 3. Interview question 1
 # change the nth digit of binary value of an integer to 1
 
@@ -251,7 +544,7 @@ def solution(a, offset):
         xorVal = 1 << (offset - 1)
         return a ^ xorVal
 
-##################################################
+#
 # 2. Insertion Sort List
 # Definition for singly-linked list.
 # class ListNode:
@@ -284,7 +577,7 @@ class Solution:
 
         return dummy.next
 
-##################################################
+#
 # 1. Reverse Nodes in k-Group
 # Definition for singly-linked list.
 # class ListNode:

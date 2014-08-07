@@ -7,27 +7,29 @@ __author__ = 'le0nh@rdt'
 class Solution:
     # @param A, a list of integers
     # @return an integer
+
     def firstMissingPositive(self, A):
         B = list(set(A))
         B.sort()
         i = 0
         while i < len(B) - 1:
-            if B[i+1] != B[i] + 1:
-                if B[i+1] < 1:
-                    i += 1; continue
-                elif B[i+1] > 1:
-                    if  B[i] < 0:
+            if B[i + 1] != B[i] + 1:
+                if B[i + 1] < 1:
+                    i += 1
+                    continue
+                elif B[i + 1] > 1:
+                    if B[i] < 0:
                         return 1
                     elif B[i] >= 0:
                         return B[i] + 1
-                elif B[i+1] == 1:
-                    return self.getFirstPos(i+1 ,B)
+                elif B[i + 1] == 1:
+                    return self.getFirstPos(i + 1, B)
             i += 1
         return B[-1] + 1 if B[-1] >= 0 else 1
-    
+
     def getFirstPos(self, start, B):
-        for i in xrange(start, len(B)-1):
-            if B[i+1] != B[i] + 1:
+        for i in xrange(start, len(B) - 1):
+            if B[i + 1] != B[i] + 1:
                 return B[i] + 1
         return B[-1] + 1
 
@@ -42,13 +44,16 @@ class Solution:
 class Solution:
     # @param node, a undirected graph node
     # @return a undirected graph node
+
     def cloneGraph(self, node):
-        if node == None: return node
+        if node == None:
+            return node
         nodeMap = {}
         return self.cloneNode(node, nodeMap)
-    
+
     def cloneNode(self, node, nodeMap):
-        if node == None: return node
+        if node == None:
+            return node
         if nodeMap.has_key(node):
             return nodeMap[node]
         else:
@@ -63,23 +68,25 @@ class Solution:
 class Solution:
     # @param s, a string
     # @return a boolean
+
     def isNumber(self, s):
-        INVALID = 0;
-        SPACE = 1;
-        SIGN = 2;
-        DIGIT = 3;
-        DOT = 4;
+        INVALID = 0
+        SPACE = 1
+        SIGN = 2
+        DIGIT = 3
+        DOT = 4
         EXPONENT = 5
         transitionMatrix = [[-1, 0, 3, 1, 2, -1],  # 0 no input or just spaces
                             [-1, 8, -1, 1, 4, 5],  # 1 input is digits
-                            [-1, -1, -1, 4, -1, -1],  # 2 no digits in front just Dot
-                            [-1, -1, -1, 1, 2, -1],  #3 sign
-                            [-1, 8, -1, 4, -1, 5],  #4 digits and dot in front
-                            [-1, -1, 6, 7, -1, -1],  #5 input 'e' or 'E'
-                            [-1, -1, -1, 7, -1, -1],  #6 after 'e' input sign
-                            [-1, 8, -1, 7, -1, -1],  #7 after 'e' input digits
+                            # 2 no digits in front just Dot
+                            [-1, -1, -1, 4, -1, -1],
+                            [-1, -1, -1, 1, 2, -1],  # 3 sign
+                            [-1, 8, -1, 4, -1, 5],  # 4 digits and dot in front
+                            [-1, -1, 6, 7, -1, -1],  # 5 input 'e' or 'E'
+                            [-1, -1, -1, 7, -1, -1],  # 6 after 'e' input sign
+                            [-1, 8, -1, 7, -1, -1],  # 7 after 'e' input digits
                             [-1, 8, -1, -1, -1, -1]]  # 8 after valid input input space
-        state = 0;
+        state = 0
         i = 0
         while i < len(s):
             inputType = INVALID
@@ -107,15 +114,17 @@ class Solution:
 class Solution:
     # @param s, a string
     # @return a boolean
+
     def isPalindrome(self, s):
-        if len(s) <= 1: return True
+        if len(s) <= 1:
+            return True
         s1 = self.cleanup(s.lower())
         s2 = s1[::-1]
         if s1 == s2:
             return True
         else:
             return False
-            
+
     def cleanup(self, s):
         alphanumeric = "zxcvbnmlkjhgfdsaqwertyuiop1234567890"
         cleaned = ""
@@ -134,35 +143,42 @@ class Solution:
 
 class Solution:
     # @return a ListNode
+
     def addTwoNumbers(self, l1, l2):
-        if l1 == None: return l2
-        elif l2 == None: return l1
-        
-        p = l1; q = l2
-        dummy = ListNode(0); s = dummy; carry = 0
-        
+        if l1 == None:
+            return l2
+        elif l2 == None:
+            return l1
+
+        p = l1
+        q = l2
+        dummy = ListNode(0)
+        s = dummy
+        carry = 0
+
         while p or q:
             if p != None:
                 if q != None:
                     curr = p.val + q.val + carry
-                    p = p.next; q = q.next
+                    p = p.next
+                    q = q.next
                 else:
                     curr = p.val + carry
                     p = p.next
             else:
-                if q != None: 
+                if q != None:
                     curr = q.val + carry
                     q = q.next
-            
+
             s.next = ListNode(curr % 10)
             carry = curr / 10
             s = s.next
-                
+
         if carry > 0:
             s.next = ListNode(carry)
         return dummy.next
-        
-        
+
+
 # Copy List with Random Pointer
 # Definition for singly-linked list with a random pointer.
 # class RandomListNode:
