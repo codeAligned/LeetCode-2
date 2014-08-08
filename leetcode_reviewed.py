@@ -1,15 +1,154 @@
 __author__ = 'le0nh@rdt'
-# =============== Mistake List ===================
-# 17. Permutation: Should return [num] instead of num when len(num) == 1
-# 18. Search Matrix: use global index to simplify searching procedure
-# 19. Best Time to Buy and Sell Stock: keep track of two value: topPrice
-# and maxProfit. Traverse backward.
 # =============== Submit Record ==================
-# 21. One-time pass
-# 22. 
+# 21. Pass
+# 22. Need help | Pass
+# 23. Pass
+# 24. Need help | Wrong | Pass
+# 25. Fail | Pass
+# 26. Pass
+# 27. 
+
 # ================================================
 #
-# 22. 
+# 26. Binary Tree Level Order Traversal
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return a list of lists of integers
+    def levelOrder(self, root):
+        if root == None: return []
+        self.res = []
+        self.dfs(0, root)
+        return self.res
+        
+    def dfs(self, level, root):
+        if root == None: return
+        if level >= len(self.res):
+            self.res.append([root.val])
+        else:
+            self.res[level].append(root.val)
+        self.dfs(level + 1, root.left)
+        self.dfs(level + 1, root.right)
+
+#
+# 25. Linked List Cycle II 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param head, a ListNode
+    # @return a list node
+    def detectCycle(self, head):
+        if head == None: return None
+        dummy = ListNode(0)
+        dummy.next = head
+        p = dummy; q = dummy
+        
+        while q.next != None and q.next.next != None:
+            p = p.next; q = q.next.next
+            if p == q: 
+                q = dummy
+                while q != p:
+                    p = p.next; q = q.next
+                return p
+        
+        return None
+#
+# 24. Spiral Matrix II 
+class Solution:
+    # @return a list of lists of integer
+    def generateMatrix(self, n):
+        res = [[0 for i in xrange(n)] for i in xrange(n)]
+        
+        count = 1
+        # Direction: 0 - Right, 1 - Down, 2 - Left, 3 - Up
+        direction = 0
+        
+        wallUp = -1; wallDown = n; wallLeft = -1; wallRight = n
+        
+        while count <= n*n:
+            if direction == 0:
+                for i in xrange(wallLeft + 1, wallRight, 1):
+                    res[wallUp + 1][i] = count
+                    count += 1
+                wallUp += 1
+            elif direction == 1:
+                for i in xrange(wallUp + 1, wallDown, 1):
+                    res[i][wallRight - 1] = count
+                    count += 1
+                wallRight -= 1
+            elif direction == 2:
+                for i in xrange(wallRight - 1, wallLeft, -1):
+                    res[wallDown - 1][i] = count
+                    count += 1
+                wallDown -= 1
+            elif direction == 3:
+                for i in xrange(wallDown - 1, wallUp, -1):
+                    res[i][wallLeft + 1] = count
+                    count += 1
+                wallLeft += 1
+            
+            direction = (direction + 1) % 4
+        
+        return res
+
+#
+# 23. Binary Tree Postorder Traversal 
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return a list of integers
+    def postorderTraversal(self, root):
+        if root == None: return []
+        stack1 = []; stack2 = []
+        res = []
+        stack1.append(root)
+        
+        while stack1:
+            top = stack1.pop()
+            if top.left != None:
+                stack1.append(top.left)
+            if top.right != None:
+                stack1.append(top.right)
+            stack2.append(top)
+        
+        for i in xrange(len(stack2) -1, -1, -1):
+            res.append(stack2[i].val)
+        return res
+#
+# 22. Container With Most Water
+class Solution:
+    # @return an integer
+    def maxArea(self, height):
+        len_height = len(height)
+        if len_height <= 1: return 0
+        
+        maxVolumn = 0
+        start = 0; end = len_height - 1
+        while start < end:
+            contain = min(height[start], height[end]) * (end - start)
+            maxVolumn = max(maxVolumn, contain)
+            if height[start] <= height[end]:
+                start += 1
+            else:
+                end -= 1
+        
+        return maxVolumn
 
 
 #

@@ -1,3 +1,15 @@
+25. Linked List Loop: while loop的条件写错了，判断q.next.next之前一定要判断q.next，否则如果q.next是None的话不就编译错误了嘛
+
+24. Spiral Matrix II: 大方向正确 但是怎么实现还要记住: 用Wall的概念，比如往右走，就是贴着wallUp，从wallLeft往wallRight走
+
+22. Contain Most Water: 虽然记得是从两边往中间靠，但是什么时候start+1 什么时候end-1忘记了
+
+19. Best Time to Buy and Sell Stock: keep track of two value: topPrice and maxProfit. Traverse backward.
+
+18. Search Matrix: use global index to simplify searching procedure
+
+17. Permutation: Should return [num] instead of num when len(num) == 1
+
 12. Sort color: 没有使用双指针和交换操作，试图使用insert和pop
 
 10. Merge Sorted Array: 没有从后往前
