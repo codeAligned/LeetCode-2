@@ -1,14 +1,217 @@
 __author__ = 'le0nh@rdt'
 # =============== Submit Record ==================
 # 21. Pass
-# 22. Need help | Pass
+# 22. Help | Pass
 # 23. Pass
-# 24. Need help | Wrong | Pass
+# 24. Help | Fail | Pass
 # 25. Fail | Pass
 # 26. Pass
-# 27. 
-
+# 27. Fail | Pass
+# 28. Fail | Fail | Fail | Pass
+# 29. Fail | Fail | Pass
+# 30. Help | Fail | Fail | Pass
+# 31. Fail | Fail | Pass
 # ================================================
+#
+# 32. 
+
+#
+# 31. Valid Parenthese
+class Solution:
+    # @return a boolean
+    def isValid(self, s):
+        right = ")]}"
+        left = "([{"
+        if len(s) == 0: return True
+        if len(s) == 1: return False
+        
+        if s[0] in right: return False
+        
+        dict = {'(':')', '[':']', '{':'}'}
+        stack = []
+        stack.append(s[0])
+        i = 1
+        
+        while i < len(s):
+            if s[i] in right:
+                if stack:
+                    tmp = stack.pop()
+                    if dict[tmp] != s[i]:
+                        return False
+                else: return False
+            else:
+                stack.append(s[i])
+            i += 1
+        
+        if not stack and i == len(s):
+            return True
+        else:
+            return False
+
+#
+# 30. Populating Next Right Pointer in Each Node II
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+#         self.next = None
+
+class Solution:
+    # @param root, a tree node
+    # @return nothing
+
+    def connect(self, root):
+        if root == None:
+            return None
+        curr = root
+        nexthead = None
+        nextend = None
+
+        while curr:
+            if curr.left:
+                if nexthead:
+                    nextend.next = curr.left
+                    nextend = nextend.next
+                else:
+                    nexthead = curr.left
+                    nextend = nexthead
+            if curr.right:
+                if nexthead:
+                    nextend.next = curr.right
+                    nextend = nextend.next
+                else:
+                    nexthead = curr.right
+                    nextend = nexthead
+
+            if curr.next == None:
+                curr = nexthead
+                nexthead = None
+                nextend = None
+            else:
+                curr = curr.next
+
+
+#
+# 29. LRU Cache
+class LRUCache:
+
+    # @param capacity, an integer
+
+    def __init__(self, capacity):
+        self.dict = collections.OrderedDict()
+        self.capacity = capacity
+        self.numItems = 0
+
+    # @return an integer
+    def get(self, key):
+        try:
+            value = self.dict[key]
+            self.set(key, value)
+            return value
+        except:
+            return -1
+
+    # @param key, an integer
+    # @param value, an integer
+    # @return nothing
+    def set(self, key, value):
+        try:
+            del self.dict[key]
+            self.dict[key] = value
+        except:
+            if self.numItems == self.capacity:
+                self.dict.popitem(last=False)
+                self.numItems -= 1
+            self.dict[key] = value
+            self.numItems += 1
+        return
+#
+# 28. Path Sum
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+
+class Solution:
+    # @param root, a tree node
+    # @param sum, an integer
+    # @return a boolean
+
+    def hasPathSum(self, root, sum):
+        if root == None:
+            return False
+        return self.dfs(sum, root)
+
+    def dfs(self, target, root):
+        if root.left == None and root.right == None:
+            if target == root.val:
+                return True
+            else:
+                return False
+
+        left = False
+        right = False
+
+        if root.left != None:
+            left = self.dfs(target - root.val, root.left)
+        if root.right != None:
+            right = self.dfs(target - root.val, root.right)
+
+        return left or right
+#
+# 27. Set Matrix Zeroes
+
+
+class Solution:
+    # @param matrix, a list of lists of integers
+    # RETURN NOTHING, MODIFY matrix IN PLACE.
+
+    def setZeroes(self, matrix):
+        if len(matrix) == 0:
+            return
+
+        m = len(matrix)
+        n = len(matrix[0])
+        firstColumn = False
+        firstRow = False
+
+        for i in xrange(0, m):
+            if matrix[i][0] == 0:
+                firstColumn = True
+                continue
+        for j in xrange(0, n):
+            if matrix[0][j] == 0:
+                firstRow = True
+                continue
+
+        for i in xrange(1, m):
+            for j in xrange(1, n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
+
+        for i in xrange(1, m):
+            if matrix[i][0] == 0:
+                for j in xrange(1, n):
+                    matrix[i][j] = 0
+        for j in xrange(1, n):
+            if matrix[0][j] == 0:
+                for i in xrange(1, m):
+                    matrix[i][j] = 0
+
+        if firstColumn:
+            for i in xrange(m):
+                matrix[i][0] = 0
+        if firstRow:
+            for j in xrange(n):
+                matrix[0][j] = 0
+
+
 #
 # 26. Binary Tree Level Order Traversal
 # Definition for a  binary tree node
@@ -21,14 +224,17 @@ __author__ = 'le0nh@rdt'
 class Solution:
     # @param root, a tree node
     # @return a list of lists of integers
+
     def levelOrder(self, root):
-        if root == None: return []
+        if root == None:
+            return []
         self.res = []
         self.dfs(0, root)
         return self.res
-        
+
     def dfs(self, level, root):
-        if root == None: return
+        if root == None:
+            return
         if level >= len(self.res):
             self.res.append([root.val])
         else:
@@ -37,45 +243,57 @@ class Solution:
         self.dfs(level + 1, root.right)
 
 #
-# 25. Linked List Cycle II 
+# 25. Linked List Cycle II
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
 
+
 class Solution:
     # @param head, a ListNode
     # @return a list node
+
     def detectCycle(self, head):
-        if head == None: return None
+        if head == None:
+            return None
         dummy = ListNode(0)
         dummy.next = head
-        p = dummy; q = dummy
-        
+        p = dummy
+        q = dummy
+
         while q.next != None and q.next.next != None:
-            p = p.next; q = q.next.next
-            if p == q: 
+            p = p.next
+            q = q.next.next
+            if p == q:
                 q = dummy
                 while q != p:
-                    p = p.next; q = q.next
+                    p = p.next
+                    q = q.next
                 return p
-        
+
         return None
 #
-# 24. Spiral Matrix II 
+# 24. Spiral Matrix II
+
+
 class Solution:
     # @return a list of lists of integer
+
     def generateMatrix(self, n):
         res = [[0 for i in xrange(n)] for i in xrange(n)]
-        
+
         count = 1
         # Direction: 0 - Right, 1 - Down, 2 - Left, 3 - Up
         direction = 0
-        
-        wallUp = -1; wallDown = n; wallLeft = -1; wallRight = n
-        
-        while count <= n*n:
+
+        wallUp = -1
+        wallDown = n
+        wallLeft = -1
+        wallRight = n
+
+        while count <= n * n:
             if direction == 0:
                 for i in xrange(wallLeft + 1, wallRight, 1):
                     res[wallUp + 1][i] = count
@@ -96,13 +314,13 @@ class Solution:
                     res[i][wallLeft + 1] = count
                     count += 1
                 wallLeft += 1
-            
+
             direction = (direction + 1) % 4
-        
+
         return res
 
 #
-# 23. Binary Tree Postorder Traversal 
+# 23. Binary Tree Postorder Traversal
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -110,15 +328,19 @@ class Solution:
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
     # @param root, a tree node
     # @return a list of integers
+
     def postorderTraversal(self, root):
-        if root == None: return []
-        stack1 = []; stack2 = []
+        if root == None:
+            return []
+        stack1 = []
+        stack2 = []
         res = []
         stack1.append(root)
-        
+
         while stack1:
             top = stack1.pop()
             if top.left != None:
@@ -126,20 +348,25 @@ class Solution:
             if top.right != None:
                 stack1.append(top.right)
             stack2.append(top)
-        
-        for i in xrange(len(stack2) -1, -1, -1):
+
+        for i in xrange(len(stack2) - 1, -1, -1):
             res.append(stack2[i].val)
         return res
 #
 # 22. Container With Most Water
+
+
 class Solution:
     # @return an integer
+
     def maxArea(self, height):
         len_height = len(height)
-        if len_height <= 1: return 0
-        
+        if len_height <= 1:
+            return 0
+
         maxVolumn = 0
-        start = 0; end = len_height - 1
+        start = 0
+        end = len_height - 1
         while start < end:
             contain = min(height[start], height[end]) * (end - start)
             maxVolumn = max(maxVolumn, contain)
@@ -147,7 +374,7 @@ class Solution:
                 start += 1
             else:
                 end -= 1
-        
+
         return maxVolumn
 
 
@@ -163,21 +390,24 @@ class Solution:
 class Solution:
     # @param root, a tree node
     # @return a list of lists of integers
+
     def levelOrderBottom(self, root):
-       if root == None: return []
-       self.res = []
-       self.dfs(0, root)
-       self.res.reverse()
-       return self.res
-      
+        if root == None:
+            return []
+        self.res = []
+        self.dfs(0, root)
+        self.res.reverse()
+        return self.res
+
     def dfs(self, level, root):
-        if root == None: return
+        if root == None:
+            return
         if level == len(self.res):
             self.res.append([root.val])
         else:
             self.res[level].append(root.val)
-        self.dfs(level+1, root.left)
-        self.dfs(level+1, root.right)
+        self.dfs(level + 1, root.left)
+        self.dfs(level + 1, root.right)
 
 #
 # 20. Minimum Path Sum

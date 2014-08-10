@@ -1,3 +1,9 @@
+30. Populate Next Pointer II: 记得使用nextlevelhead和nextlevelend记录已经完成连接的部分
+
+29. LRU Cache: set(key, value)的时候，key存在和不存在，numItems的处理是不一样的 - key存在则不用+1
+
+27. Set Matrix Zero: 用两个flag标记第一行和第一列最后是否通通变为0， 而不是用m[0][0]标记，因为到最后你也不知道m[0][0]表示的是第一行变为0还是第一列变为0
+
 25. Linked List Loop: while loop的条件写错了，判断q.next.next之前一定要判断q.next，否则如果q.next是None的话不就编译错误了嘛
 
 24. Spiral Matrix II: 大方向正确 但是怎么实现还要记住: 用Wall的概念，比如往右走，就是贴着wallUp，从wallLeft往wallRight走
