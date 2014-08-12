@@ -171,3 +171,153 @@ public class Solution {
         return result;
     }
 }
+
+// 7. Subsets
+public class Solution {
+    public List<List<Integer>> subsets(int[] S) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (S == null || S.length == 0) {
+            return result;
+        }
+        
+        Arrays.sort(S);
+        List<Integer> solution = new ArrayList<Integer>();
+        helpGetSubsets(S, 0, solution, result);
+        return result;
+    }
+    
+    private void helpGetSubsets(int[] S, int start, List<Integer> solution,
+        List<List<Integer>> result) {
+        result.add(new ArrayList<Integer>(solution));
+        
+        for (int i = start; i < S.length; i++) {
+            solution.add(S[i]);
+            helpGetSubsets(S, i + 1, solution, result);
+            solution.remove(solution.size() - 1);
+        }
+    }
+}
+
+// 8. Subsets II
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] num) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (num == null || num.length == 0) {
+            return result;
+        }
+        
+        Arrays.sort(num);
+        List<Integer> combination = new ArrayList<Integer>();
+        helpGetSubsets(num, 0, combination, result);
+        return result;
+    }
+    
+    private void helpGetSubsets(int[] num, int start, List<Integer> combination, List<List<Integer>> result) {
+        result.add(new ArrayList<Integer>(combination));
+        
+        for (int i = start; i < num.length; i++) {
+            if (i > start && num[i] == num[i - 1]) {
+                continue;
+            }
+            combination.add(num[i]);
+            helpGetSubsets(num, i + 1, combination, result);
+            combination.remove(combination.size() - 1);
+        }
+    }
+}
+
+// 9. Permutations
+public class Solution {
+    public List<List<Integer>> permute(int[] num) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (num == null || num.length == 0) {
+            return result;
+        }
+        List<Integer> permutation = new ArrayList<Integer>();
+        boolean[] visited = new boolean[num.length];
+        helpPermute(num, permutation, visited, result);
+        return result;
+    }
+    
+    public void helpPermute(int[] num, List<Integer> permutation, boolean[] visited, 
+        List<List<Integer>> result) {
+        
+        if (permutation.size() == num.length) {
+            result.add(new ArrayList<Integer>(permutation));
+            return;
+        }
+        
+        for (int i = 0; i < num.length; i++) {
+            if (!visited[i]) {
+                permutation.add(num[i]);
+                visited[i] = true;
+                helpPermute(num, permutation, visited, result);
+                visited[i] = false;
+                permutation.remove(permutation.size() - 1);
+            }
+        }
+    }
+}
+
+// 10. Permutations II
+public class Solution {
+    public List<List<Integer>> permuteUnique(int[] num) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (num == null || num.length == 0) {
+            return result;
+        }
+        boolean[] visited = new boolean[num.length];
+        List<Integer> list = new ArrayList<Integer>();
+        // first sort the array
+        Arrays.sort(num);
+        helpPermute(num, visited, list, result);
+        return result;
+    }
+    
+    public void helpPermute(int[] num, boolean[] visited, List<Integer> list,
+    List<List<Integer>> result) {
+        if (list.size() == num.length) {
+            result.add(new ArrayList<Integer>(list));
+            return;
+        }
+        for (int i = 0; i < num.length; i++) {
+            // Do not consider a duplicated number if its earlier appearance has
+            // not been considered yet
+            if (visited[i] || (i != 0 && num[i] == num[i - 1] && !visited[i - 1])) {
+                continue;
+            }
+            list.add(num[i]);
+            visited[i] = true;
+            helpPermute(num, visited, list, result);
+            list.remove(list.size() - 1);
+            visited[i] = false;
+        }
+    }
+}
+
+// 11. Combinations
+public class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (k <= 0 || n <= 0) {
+            return result;
+        }
+        List<Integer> combination = new ArrayList<Integer>();
+        getCombination(combination, k, n, 1, result);
+        return result;
+    }
+    
+    private void getCombination(List<Integer> combination, int k, int n, int start, 
+        List<List<Integer>> result) {
+        if (combination.size() == k) {
+            result.add(new ArrayList<Integer>(combination));
+            return;
+        }
+        
+        for (int i = start; i <= n ; i++) {
+            combination.add(i);
+            getCombination(combination, k, n, i + 1, result);
+            combination.remove(combination.size() - 1);
+        }
+    }
+}
