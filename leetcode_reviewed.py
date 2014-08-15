@@ -11,9 +11,32 @@ __author__ = 'le0nh@rdt'
 # 29. Fail | Fail | Pass
 # 30. Help | Fail | Fail | Pass
 # 31. Fail | Fail | Pass
+# 32. Help | Fail | Pass
 # ================================================
 #
-# 32. 
+# 32. Edit Distance
+class Solution:
+    # @return an integer
+    def minDistance(self, word1, word2):
+        len1 = len(word1); len2 = len(word2)
+        if len(word1) == 0: return len2
+        if len(word2) == 0: return len1
+        
+        dp = [[0 for j in xrange(len2 + 1)] for i in xrange(len1 + 1)]
+        
+        for i in xrange(1, len1 + 1):
+            dp[i][0] = i
+        for j in xrange(1, len2 + 1):
+            dp[0][j] = j
+        
+        for i in xrange(1, len1 + 1):
+            for j in xrange(1, len2 + 1):
+                if word1[i-1] == word2[j-1]: 
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+        
+        return dp[len1][len2]
 
 #
 # 31. Valid Parenthese
