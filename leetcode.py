@@ -1,4 +1,26 @@
 __author__ = 'le0nh@rdt'
+# Anagrams
+class Solution:
+    # @param strs, a list of strings
+    # @return a list of strings
+    def anagrams(self, strs):
+        if len(strs) <= 1: return []
+        d = dict()
+
+        for s in strs:
+            key = ''.join(sorted(s))
+            if d.has_key(key):
+                d[key].append(s)
+            else:
+                d[key] = [s]
+        
+        ret = []
+        for key in d:
+            if len(d[key]) >1:
+                ret += d[key]
+        return ret
+
+
 # Scramble String
 # Recursive
 class Solution:
