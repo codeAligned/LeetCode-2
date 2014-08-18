@@ -1,4 +1,40 @@
 __author__ = 'le0nh@rdt'
+# 
+
+
+# Sqrt(x) 
+class Solution:
+    # @param x, an integer
+    # @return an integer
+    def sqrt(self, x):
+        if x == 0: return 0
+        start = 0; end = x
+        while start < end:
+            mid = (start + end) // 2
+            if mid*mid > x:
+                end = mid
+            elif (mid + 1)*(mid + 1) < x:
+                start = mid + 1
+            elif mid * mid == x: return mid
+            elif (mid + 1)*(mid + 1) == x: return mid + 1
+            else: return mid
+
+
+# Longest Substring Without Repeating Characters
+class Solution:
+    # @return an integer
+    def lengthOfLongestSubstring(self, s):
+        if len(s) <= 1: return len(s)
+        start = 0; end = 1; maxLen = 1
+        while end < len(s):
+            if s[end] in s[start:end]:
+                maxLen = max(end - start, maxLen)
+                start = s[start:end].index(s[end]) + 1 + start
+
+            end += 1
+        maxLen = max(end - start, maxLen)
+        return maxLen
+
 # Anagrams
 class Solution:
     # @param strs, a list of strings
