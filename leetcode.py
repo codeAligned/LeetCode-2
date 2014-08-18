@@ -1,5 +1,88 @@
 __author__ = 'le0nh@rdt'
-# 
+# Rotate List
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param head, a ListNode
+    # @param k, an integer
+    # @return a ListNode
+    def rotateRight(self, head, k):
+        if head == None: return head
+        
+        dummy = ListNode(0); dummy.next = head
+        s = dummy; t = dummy
+        i = 0
+        
+        while i < k:
+            if t.next:
+                t = t.next
+            else:
+                t = dummy.next
+            i += 1
+        
+        while t.next:
+            t = t.next
+            s = s.next
+        
+        if s == dummy:
+            return head
+        else:
+            t.next = dummy.next
+            dummy.next = s.next
+            s.next = None
+            return dummy.next
+
+
+# First Missing Positive
+# hint: using bucket sort
+class Solution:
+    # @param A, a list of integers
+    # @return an integer
+    def firstMissingPositive(self, A):
+
+        for i in xrange(len(A)):
+            while A[i] != i+1:
+                if A[i] <= 0 or A[i] > len(A) or A[i] == A[A[i] - 1]:
+                    break
+                t = A[A[i]-1]; A[A[i] - 1] = A[i]; A[i] = t
+
+        for i in xrange(len(A)):
+            if A[i] != i + 1:
+                return i + 1
+        
+        return len(A) + 1
+
+
+# Best Time to Buy and Sell Stock III 
+class Solution:
+    # @param prices, a list of integer
+    # @return an integer
+    def maxProfit(self, prices):
+        if len(prices) <= 1: return 0
+        
+        lowPrice = prices[0]; maxProfitForward = []
+        maxProfit = 0
+        for price in prices:
+            lowPrice = min(lowPrice, price)
+            maxProfit = max(maxProfit, price - lowPrice)
+            maxProfitForward.append(maxProfit)
+        
+        highPrice = prices[-1]; maxProfitBackward = []
+        maxProfit = 0
+        for price in reversed(prices):
+            highPrice = max(highPrice, price)
+            maxProfit = max(maxProfit, highPrice - price)
+            maxProfitBackward.append(maxProfit)
+        maxProfitBackward.reverse()
+        
+        maxProfit = 0
+        for i in xrange(len(prices)):
+            maxProfit = max(maxProfit, maxProfitForward[i] + maxProfitBackward[i])
+        return maxProfit
 
 
 # Sqrt(x) 
@@ -1054,10 +1137,8 @@ class Solution:
 
         return p.val == q.val and self.check(p.left, q.right) and self.check(p.right, q.left)
 
-#(2)非递归法
+
 # Remove Duplicates from Sorted Array
-
-
 class Solution:
     # @param a list of integers
     # @return an integer

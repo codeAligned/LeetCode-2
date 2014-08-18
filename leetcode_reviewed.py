@@ -1,20 +1,41 @@
 __author__ = 'le0nh@rdt'
 # =============== Submit Record ==================
-# 21. Pass
-# 22. Help | Pass
-# 23. Pass
-# 24. Help | Fail | Pass
-# 25. Fail | Pass
-# 26. Pass
-# 27. Fail | Pass
-# 28. Fail | Fail | Fail | Pass
-# 29. Fail | Fail | Pass
-# 30. Help | Fail | Fail | Pass
-# 31. Fail | Fail | Pass
-# 32. Help | Fail | Pass
+# 45. Pass
+# 46. Help | Pass
+# 47. Pass
+# 48. Help | Fail | Pass
+# 49. Fail | Pass
+# 50. Pass
+# 51. Fail | Pass
+# 52. Fail | Fail | Fail | Pass
+# 53. Fail | Fail | Pass
+# 54. Help | Fail | Fail | Pass
+# 55. Fail | Fail | Pass
+# 56. Help | Fail | Pass
+# 57. Help | Pass
 # ================================================
+# 57. Remove Duplicates from Sorted Array II 
+class Solution:
+    # @param A a list of integers
+    # @return an integer
+    def removeDuplicates(self, A):
+        if len(A) <= 2: return len(A)
+        slow = 0; count = 1
+        for fast in xrange(1, len(A)):
+            if A[fast] == A[slow]:
+                count += 1
+                if count <= 2:
+                    slow += 1
+                    A[slow] = A[fast]
+            else:
+                count = 1
+                slow += 1
+                A[slow] = A[fast]
+        
+        return slow + 1
+
 #
-# 32. Edit Distance
+# 56. Edit Distance
 class Solution:
     # @return an integer
     def minDistance(self, word1, word2):
@@ -39,7 +60,7 @@ class Solution:
         return dp[len1][len2]
 
 #
-# 31. Valid Parenthese
+# 55. Valid Parenthese
 class Solution:
     # @return a boolean
     def isValid(self, s):
@@ -72,7 +93,7 @@ class Solution:
             return False
 
 #
-# 30. Populating Next Right Pointer in Each Node II
+# 54. Populating Next Right Pointer in Each Node II
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -117,7 +138,7 @@ class Solution:
 
 
 #
-# 29. LRU Cache
+# 53. LRU Cache
 class LRUCache:
 
     # @param capacity, an integer
@@ -151,7 +172,7 @@ class LRUCache:
             self.numItems += 1
         return
 #
-# 28. Path Sum
+# 52. Path Sum
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -187,7 +208,7 @@ class Solution:
 
         return left or right
 #
-# 27. Set Matrix Zeroes
+# 51. Set Matrix Zeroes
 
 
 class Solution:
@@ -236,7 +257,7 @@ class Solution:
 
 
 #
-# 26. Binary Tree Level Order Traversal
+# 50. Binary Tree Level Order Traversal
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -266,7 +287,7 @@ class Solution:
         self.dfs(level + 1, root.right)
 
 #
-# 25. Linked List Cycle II
+# 49. Linked List Cycle II
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -298,7 +319,7 @@ class Solution:
 
         return None
 #
-# 24. Spiral Matrix II
+# 48. Spiral Matrix II
 
 
 class Solution:
@@ -343,7 +364,7 @@ class Solution:
         return res
 
 #
-# 23. Binary Tree Postorder Traversal
+# 47. Binary Tree Postorder Traversal
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -376,7 +397,7 @@ class Solution:
             res.append(stack2[i].val)
         return res
 #
-# 22. Container With Most Water
+# 46. Container With Most Water
 
 
 class Solution:
@@ -402,7 +423,7 @@ class Solution:
 
 
 #
-# 21. Binary Tree Level Order Traversal II
+# 45. Binary Tree Level Order Traversal II
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -433,7 +454,7 @@ class Solution:
         self.dfs(level + 1, root.right)
 
 #
-# 20. Minimum Path Sum
+# 44. Minimum Path Sum
 
 
 class Solution:
@@ -460,7 +481,7 @@ class Solution:
         return grid[-1][-1]
 
 #
-# 19. Best Time to Buy and Sell Stock
+# 43. Best Time to Buy and Sell Stock
 
 
 class Solution:
@@ -482,7 +503,7 @@ class Solution:
         return maxProfit
 
 #
-# 18. Search Matrix
+# 42. Search Matrix
 
 
 class Solution:
@@ -512,7 +533,7 @@ class Solution:
         return False
 
 #
-# 17. Permutation
+# 41. Permutation
 
 
 class Solution:
@@ -532,7 +553,7 @@ class Solution:
         return res
 
 #
-# 16. Plus One
+# 40. Plus One
 
 
 class Solution:
@@ -564,7 +585,7 @@ class Solution:
             return res
 
 #
-# 15. Rotate Image
+# 39. Rotate Image
 
 
 class Solution:
@@ -592,7 +613,7 @@ class Solution:
                 j][n - 1 - i], matrix[n - 1 - i][n - 1 - j]
 
 #
-# 14. Generate Parenthnese
+# 38. Generate Parenthnese
 
 
 class Solution:
@@ -611,7 +632,7 @@ class Solution:
             return ["(" + i for i in self.dfs(left + 1, right, n)] + [")" + i for i in self.dfs(left, right + 1, n)]
 
 #
-# 13. Pascal Triangle
+# 37. Pascal Triangle
 
 
 class Solution:
@@ -639,7 +660,7 @@ class Solution:
         return res
 
 #
-# 12. Sort Colors
+# 36. Sort Colors
 
 
 class Solution:
@@ -664,7 +685,7 @@ class Solution:
                 p += 1
 
 #
-# 11. N Queens II
+# 35. N Queens II
 
 
 class Solution:
@@ -693,7 +714,7 @@ class Solution:
                 self.solve(n, currQ + 1, B)
 
 #
-# 10. Merge Tow Sorted Array (correct locally, no idea why online judge
+# 34. Merge Tow Sorted Array (correct locally, no idea why online judge
 # says wrong answer)
 
 
@@ -747,7 +768,7 @@ class Solution:
             k -= 1
 
 #
-# 9. Symmetric Tree
+# 33. Symmetric Tree
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -777,7 +798,7 @@ class Solution:
             return False
 
 #
-# 8. Remove Duplicate from Sorted Array
+# 32. Remove Duplicate from Sorted Array
 
 
 class Solution:
@@ -802,7 +823,7 @@ class Solution:
         return curr + 1
 
 #
-# 7. Swap Nodes in Pairs
+# 31. Swap Nodes in Pairs
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -835,7 +856,7 @@ class Solution:
 
 
 #
-# 6. Balanced Binary Tree
+# 30. Balanced Binary Tree
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -861,7 +882,7 @@ class Solution:
 
 
 #
-# 5. Merge Tow Sorted List
+# 29. Merge Tow Sorted List
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -896,48 +917,7 @@ class Solution:
 
 
 #
-# 4. return the number of different ways to climb stairs, each level can move
-# 4 steps at most.
-
-
-def climbStairs(num):
-    if num <= 4:
-        resArray = [0 for i in xrange(5)]
-        initArray(resArray)
-        return resArray[num]
-    elif num >= 5:
-        resArray = [0 for i in xrange(num + 1)]
-        initArray(resArray)
-        for i in xrange(5, num + 1):
-            resArray[i] = resArray[i - 1] + resArray[i - 2] + \
-                resArray[i - 3] + resArray[i - 4]
-        return resArray[num]
-
-
-def initArray(resArray):
-    for i in xrange(len(resArray)):
-        resArray[0] = 1
-        resArray[1] = 1
-        resArray[2] = 2
-        resArray[3] = resArray[2] + resArray[1] + resArray[0]
-        resArray[4] = resArray[3] + resArray[2] + resArray[1] + resArray[0]
-    return resArray
-
-#
-# 3. Interview question 1
-# change the nth digit of binary value of an integer to 1
-
-
-def solution(a, offset):
-    tmp = a >> (offset - 1)
-    if tmp % 2 == 1:
-        return a
-    elif tmp % 2 == 0:
-        xorVal = 1 << (offset - 1)
-        return a ^ xorVal
-
-#
-# 2. Insertion Sort List
+# 28. Insertion Sort List
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -970,7 +950,7 @@ class Solution:
         return dummy.next
 
 #
-# 1. Reverse Nodes in k-Group
+# 27. Reverse Nodes in k-Group
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
