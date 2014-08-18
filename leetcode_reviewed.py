@@ -13,7 +13,31 @@ __author__ = 'le0nh@rdt'
 # 55. Fail | Fail | Pass
 # 56. Help | Fail | Pass
 # 57. Help | Pass
+# 58. Fail | Pass
 # ================================================
+# 58. Combinations
+class Solution:
+    # @return a list of lists of integers
+    def combine(self, n, k):
+        A = [i for i in xrange(1, n + 1)]
+        return self.dfs(k, A)
+
+    def dfs(self, k, A):
+        if k == 1:
+            ret = []
+            for i in A:
+                ret.append([i])
+            return ret
+        elif k == len(A):
+            return [A]
+        else:
+            ret = []
+            for i in xrange(0, len(A)):
+                for j in self.dfs(k - 1, A[i+1:]):
+                    ret.append([A[i]]+j)
+            return ret
+
+
 # 57. Remove Duplicates from Sorted Array II 
 class Solution:
     # @param A a list of integers
