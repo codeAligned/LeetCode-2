@@ -1,4 +1,73 @@
 __author__ = 'le0nh@rdt'
+
+# Merge K Sorted List
+# 2) Heap structure
+class Solution:
+    # @param a list of ListNode
+    # @return a ListNode
+    def mergeKLists(self, lists):
+        heap = []
+        for node in lists:
+            if node != None: heap.append((node.val, node))
+        heapq.heapify(heap)
+        head = ListNode(0); curr = head
+        while heap:
+            pop = heapq.heappop(heap)
+            curr.next = ListNode(pop[0])
+            curr = curr.next
+            if pop[1].next: heapq.heappush(heap, (pop[1].next.val, pop[1].next))
+        return head.next
+
+# 1) Time Exceed 
+class Solution:
+    # @param a list of ListNode
+    # @return a ListNode
+    def mergeKLists(self, lists):
+        if len(lists) == 0: return None
+        if len(lists) == 1: return lists[0]
+        
+        dummy1 = ListNode(0); start = 0
+        while lists[start] == None and start < len(lists) - 1:
+            start += 1
+        
+        dummy1.next = lists[start]
+
+        for j in xrange(start + 1, len(lists)):
+            self.mergeTwo(dummy1.next, lists[j])
+        
+        return dummy1.next
+    
+    def mergeTwo(self, l1, l2):
+        if l1 == None:
+            return l2
+        if l2 == None:
+            return l1
+
+        if l1.val <= l2.val:
+            node = l1
+            head = l1
+            l1 = l1.next
+        else:
+            node = l2
+            head = l2
+            l2 = l2.next
+        while l1 != None and l2 != None:
+            if l1.val <= l2.val:
+                node.next = l1
+                node = node.next
+                l1 = l1.next
+            else:
+                node.next = l2
+                node = node.next
+                l2 = l2.next
+
+        if l1 != None:
+            node.next = l1
+        elif l2 != None:
+            node.next = l2
+        return head
+
+
 # Rotate List
 # Definition for singly-linked list.
 # class ListNode:
