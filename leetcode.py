@@ -1,42 +1,126 @@
 __author__ = 'le0nh@rdt'
 
+# Maximal Rectangle
+class Solution:
+    # @param matrix, a list of lists of 1 length string
+    # @return an integer
+
+    def maximalRectangle(self, matrix):
+        for i in xrange(len(matrix)):
+            for j in xrange(len(matrix[0])):
+                if matrix[i][j] == '1':
+                    matrix[i][j] = 1
+                else:
+                    matrix[i][j] = 0
+        for i in xrange(1, len(matrix)):
+            for j in xrange(len(matrix[0])):
+                if matrix[i][j] != 0:
+                    matrix[i][j] += matrix[i - 1][j]
+        maximalRec = 0
+        for height in matrix:
+            maximalRec = max(maximalRec, self.largestRectangleArea(height))
+        return maximalRec
+
+    def largestRectangleArea(self, height):
+        height_stack = []
+        index_stack = []
+        largestRec = 0
+        for i in xrange(len(height)):
+            if (not height_stack) or height[i] > height_stack[-1]:
+                height_stack.append(height[i])
+                index_stack.append(i)
+            elif height[i] < height_stack[-1]:
+                lastIndex = 0
+                while height_stack and height_stack[-1] > height[i]:
+                    lastIndex = index_stack.pop()
+                    width = i - lastIndex
+                    s = width * height_stack.pop()
+                    largestRec = max(largestRec, s)
+                height_stack.append(height[i])
+                index_stack.append(lastIndex)
+        while height_stack:
+            largestRec = max(
+                largestRec, height_stack.pop() * (len(height) - index_stack.pop()))
+
+        return largestRec
+
+
+# Largest Rectangle in Histogram
+class Solution:
+    # @param height, a list of integer
+    # @return an integer
+
+    def largestRectangleArea(self, height):
+        height_stack = []
+        index_stack = []
+        largestRec = 0
+        for i in xrange(len(height)):
+            if (not height_stack) or height[i] > height_stack[-1]:
+                height_stack.append(height[i])
+                index_stack.append(i)
+            elif height[i] < height_stack[-1]:
+                lastIndex = 0
+                while height_stack and height_stack[-1] > height[i]:
+                    lastIndex = index_stack.pop()
+                    width = i - lastIndex
+                    s = width * height_stack.pop()
+                    largestRec = max(largestRec, s)
+                height_stack.append(height[i])
+                index_stack.append(lastIndex)
+        while height_stack:
+            largestRec = max(
+                largestRec, height_stack.pop() * (len(height) - index_stack.pop()))
+
+        return largestRec
+
+
 # Merge K Sorted List
 # 2) Heap structure
 class Solution:
     # @param a list of ListNode
     # @return a ListNode
+
     def mergeKLists(self, lists):
         heap = []
         for node in lists:
-            if node != None: heap.append((node.val, node))
+            if node != None:
+                heap.append((node.val, node))
         heapq.heapify(heap)
-        head = ListNode(0); curr = head
+        head = ListNode(0)
+        curr = head
         while heap:
             pop = heapq.heappop(heap)
             curr.next = ListNode(pop[0])
             curr = curr.next
-            if pop[1].next: heapq.heappush(heap, (pop[1].next.val, pop[1].next))
+            if pop[1].next:
+                heapq.heappush(heap, (pop[1].next.val, pop[1].next))
         return head.next
 
-# 1) Time Exceed 
+# 1) Time Exceed
+
+
 class Solution:
     # @param a list of ListNode
     # @return a ListNode
+
     def mergeKLists(self, lists):
-        if len(lists) == 0: return None
-        if len(lists) == 1: return lists[0]
-        
-        dummy1 = ListNode(0); start = 0
+        if len(lists) == 0:
+            return None
+        if len(lists) == 1:
+            return lists[0]
+
+        dummy1 = ListNode(0)
+        start = 0
         while lists[start] == None and start < len(lists) - 1:
             start += 1
-        
+
         dummy1.next = lists[start]
 
         for j in xrange(start + 1, len(lists)):
             self.mergeTwo(dummy1.next, lists[j])
-        
+
         return dummy1.next
-    
+
     def mergeTwo(self, l1, l2):
         if l1 == None:
             return l2
@@ -79,24 +163,28 @@ class Solution:
     # @param head, a ListNode
     # @param k, an integer
     # @return a ListNode
+
     def rotateRight(self, head, k):
-        if head == None: return head
-        
-        dummy = ListNode(0); dummy.next = head
-        s = dummy; t = dummy
+        if head == None:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+        s = dummy
+        t = dummy
         i = 0
-        
+
         while i < k:
             if t.next:
                 t = t.next
             else:
                 t = dummy.next
             i += 1
-        
+
         while t.next:
             t = t.next
             s = s.next
-        
+
         if s == dummy:
             return head
         else:
@@ -111,73 +199,91 @@ class Solution:
 class Solution:
     # @param A, a list of integers
     # @return an integer
+
     def firstMissingPositive(self, A):
 
         for i in xrange(len(A)):
-            while A[i] != i+1:
+            while A[i] != i + 1:
                 if A[i] <= 0 or A[i] > len(A) or A[i] == A[A[i] - 1]:
                     break
-                t = A[A[i]-1]; A[A[i] - 1] = A[i]; A[i] = t
+                t = A[A[i] - 1]
+                A[A[i] - 1] = A[i]
+                A[i] = t
 
         for i in xrange(len(A)):
             if A[i] != i + 1:
                 return i + 1
-        
+
         return len(A) + 1
 
 
-# Best Time to Buy and Sell Stock III 
+# Best Time to Buy and Sell Stock III
 class Solution:
     # @param prices, a list of integer
     # @return an integer
+
     def maxProfit(self, prices):
-        if len(prices) <= 1: return 0
-        
-        lowPrice = prices[0]; maxProfitForward = []
+        if len(prices) <= 1:
+            return 0
+
+        lowPrice = prices[0]
+        maxProfitForward = []
         maxProfit = 0
         for price in prices:
             lowPrice = min(lowPrice, price)
             maxProfit = max(maxProfit, price - lowPrice)
             maxProfitForward.append(maxProfit)
-        
-        highPrice = prices[-1]; maxProfitBackward = []
+
+        highPrice = prices[-1]
+        maxProfitBackward = []
         maxProfit = 0
         for price in reversed(prices):
             highPrice = max(highPrice, price)
             maxProfit = max(maxProfit, highPrice - price)
             maxProfitBackward.append(maxProfit)
         maxProfitBackward.reverse()
-        
+
         maxProfit = 0
         for i in xrange(len(prices)):
-            maxProfit = max(maxProfit, maxProfitForward[i] + maxProfitBackward[i])
+            maxProfit = max(
+                maxProfit, maxProfitForward[i] + maxProfitBackward[i])
         return maxProfit
 
 
-# Sqrt(x) 
+# Sqrt(x)
 class Solution:
     # @param x, an integer
     # @return an integer
+
     def sqrt(self, x):
-        if x == 0: return 0
-        start = 0; end = x
+        if x == 0:
+            return 0
+        start = 0
+        end = x
         while start < end:
             mid = (start + end) // 2
-            if mid*mid > x:
+            if mid * mid > x:
                 end = mid
-            elif (mid + 1)*(mid + 1) < x:
+            elif (mid + 1) * (mid + 1) < x:
                 start = mid + 1
-            elif mid * mid == x: return mid
-            elif (mid + 1)*(mid + 1) == x: return mid + 1
-            else: return mid
+            elif mid * mid == x:
+                return mid
+            elif (mid + 1) * (mid + 1) == x:
+                return mid + 1
+            else:
+                return mid
 
 
 # Longest Substring Without Repeating Characters
 class Solution:
     # @return an integer
+
     def lengthOfLongestSubstring(self, s):
-        if len(s) <= 1: return len(s)
-        start = 0; end = 1; maxLen = 1
+        if len(s) <= 1:
+            return len(s)
+        start = 0
+        end = 1
+        maxLen = 1
         while end < len(s):
             if s[end] in s[start:end]:
                 maxLen = max(end - start, maxLen)
@@ -188,11 +294,15 @@ class Solution:
         return maxLen
 
 # Anagrams
+
+
 class Solution:
     # @param strs, a list of strings
     # @return a list of strings
+
     def anagrams(self, strs):
-        if len(strs) <= 1: return []
+        if len(strs) <= 1:
+            return []
         d = dict()
 
         for s in strs:
@@ -201,10 +311,10 @@ class Solution:
                 d[key].append(s)
             else:
                 d[key] = [s]
-        
+
         ret = []
         for key in d:
-            if len(d[key]) >1:
+            if len(d[key]) > 1:
                 ret += d[key]
         return ret
 
@@ -213,12 +323,18 @@ class Solution:
 # Recursive
 class Solution:
     # @return a boolean
+
     def isScramble(self, s1, s2):
-        if len(s1) != len(s2): return False
-        if s1 == s2: return True
-        l1=list(s1); l2=list(s2)
-        l1.sort();l2.sort()
-        if l1!=l2: return False
+        if len(s1) != len(s2):
+            return False
+        if s1 == s2:
+            return True
+        l1 = list(s1)
+        l2 = list(s2)
+        l1.sort()
+        l2.sort()
+        if l1 != l2:
+            return False
         length = len(s1)
         for i in xrange(1, length):
             if self.isScramble(s1[:i], s2[:i]) and self.isScramble(s1[i:], s2[i:]):
