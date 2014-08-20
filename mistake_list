@@ -1,3 +1,5 @@
+111. Merge k Sorted List: 第一次timeout，使用的方法是不短将下一个list合并过来; 第一次接触用堆结构。
+
 30. Populate Next Pointer II: 记得使用nextlevelhead和nextlevelend记录已经完成连接的部分
 
 29. LRU Cache: set(key, value)的时候，key存在和不存在，numItems的处理是不一样的 - key存在则不用+1

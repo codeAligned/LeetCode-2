@@ -14,7 +14,57 @@ __author__ = 'le0nh@rdt'
 # 56. Help | Fail | Pass
 # 57. Help | Pass
 # 58. Fail | Pass
+# 59. Pass
+# 60. Fail | Fail | Pass
 # ================================================
+# 60. Sum Root to Leaf Numbers
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return an integer
+    def sumNumbers(self, root):
+        return self.sum(root, 0)
+    
+    def sum(self, root, preSum):
+        if root == None:
+            return 0
+        elif root.left == None and root.right == None:
+            return preSum + root.val
+        else:
+            return self.sum(root.left, (root.val + preSum)*10) + self.sum(root.right, (root.val + preSum)*10)
+
+# 59. Remove Nth Node From End of List
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @return a ListNode
+    def removeNthFromEnd(self, head, n):
+        if head == None: return None
+        dummy = ListNode(0); dummy.next = head
+        p = dummy
+        s = dummy
+        for i in xrange(n):
+            s = s.next
+        
+        while s.next != None:
+            s = s.next
+            p = p.next
+        
+        p.next = p.next.next
+        
+        return dummy.next
+
+
 # 58. Combinations
 class Solution:
     # @return a list of lists of integers
