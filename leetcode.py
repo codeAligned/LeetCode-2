@@ -1,7 +1,44 @@
 __author__ = 'le0nh@rdt'
-#
+# Sudoku Solver (using mask and 4 times faster than previous one)
+class Solution:
+    # @param board, a 9x9 2D array
+    # Solve the Sudoku by modifying the input board in-place.
+    # Do not return any value.
+    def solveSudoku(self, board):
+        rmask,cmask,bmask=[0]*9,[0]*9,[0]*9
+        for i in range(9):
+            for j in range(9):
+                b = i / 3 * 3 + j / 3
+                if board[i][j] != '.':
+                    change = 1 << (int(board[i][j]) - 1)
+                    self.modifyMask(rmask,cmask,bmask,i,j,b,change)
+        self.dfs(board,0,rmask,cmask,bmask)
+        
+    def modifyMask(self, rmask,cmask,bmask,i,j,b,change):
+        rmask[i] ^= change
+        cmask[j] ^= change
+        bmask[b] ^= change
 
-# Sudoku Solver
+    def dfs(self, board, k, rmask, cmask, bmask):
+        if k == 81:
+            return True
+        i,j=k/9,k%9
+        b = i / 3 * 3 + j / 3
+        if board[i][j] != '.':
+            return self.dfs(board,k+1,rmask,cmask,bmask)
+        for digit in range(9):
+            change = 1 << digit
+            if rmask[i] & change == 0 and cmask[j] & change == 0 and bmask[b] & change == 0:
+                self.modifyMask(rmask,cmask,bmask,i,j,b,change)
+                board[i][j] = str(digit+1)
+                if self.dfs(board,k+1,rmask,cmask,bmask):
+                    return True
+                board[i][j] = '.'
+                self.modifyMask(rmask,cmask,bmask,i,j,b,change)
+        return False
+        
+
+# Sudoku Solver (Time exceed but works)
 class Solution:
     # @param board, a 9x9 2D array
     # Solve the Sudoku by modifying the input board in-place.

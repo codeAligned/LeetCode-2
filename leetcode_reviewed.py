@@ -16,7 +16,99 @@ __author__ = 'le0nh@rdt'
 # 58. Fail | Pass
 # 59. Pass
 # 60. Fail | Fail | Pass
+# 61. Pass
+# 62. Pass
+# 63. Help | Pass
+# 64. Help | Fail 
+
 # ================================================
+# 64. Trapping Rain Water
+class Solution:
+    # @param A, a list of integers
+    # @return an integer
+    def trap(self, A):
+        if len(A) <= 2: return 0
+        
+        preHighest = [0] * len(A); preHighest[0] = A[0]
+        subHighest = [0] * len(A); subHighest[-1] = A[-1]
+        
+        for i in xrange(1, len(A)):
+            preHighest[i] = max(preHighest[i - 1], A[i])
+        for j in xrange(len(A) - 2, -1, -1):
+            subHighest[j] = max(subHighest[j + 1], A[j])
+            
+        trapwater = 0
+        for k in xrange(1, len(A)-1):
+            if min(preHighest[k], subHighest[k]) - A[k] > 0:
+                trapwater += min(preHighest[k], subHighest[k]) - A[k]
+        
+        return trapwater
+
+
+# 63. Palindrome Number
+class Solution:
+    # @return a boolean
+    def isPalindrome(self, x):
+        if x < 0: return False
+        k = 1
+        while x // k >= 10:
+            k *= 10
+        
+        while x > 0:
+            if x // k != x % 10:
+                return False
+            x = (x - x // k * k) // 10
+            k //= 100
+        
+        return True
+
+
+# 62. Length of Last Word
+class Solution:
+    # @param s, a string
+    # @return an integer
+    def lengthOfLastWord(self, s):
+        # last index
+        tail = len(s) - 1
+        # get index of the last char which is not space
+        while tail > -1:
+            if s[tail] == ' ':
+                tail -= 1
+            else:
+                break
+        if tail == -1: return 0
+        
+        head = tail-1
+        while head >= 0:
+            if s[head] != ' ':
+                head -= 1
+            else:
+                break
+        
+        return tail - head
+
+
+# 61. Minimum Depth of Binary Tree 
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return an integer
+    def minDepth(self, root):
+        if root == None: return 0
+        if root.left == None and root.right != None: 
+            return self.minDepth(root.right) + 1
+        elif root.right == None and root.left != None:
+            return self.minDepth(root.left) + 1
+        else:
+            return min(self.minDepth(root.left), self.minDepth(root.right)) + 1
+
+
 # 60. Sum Root to Leaf Numbers
 # Definition for a  binary tree node
 # class TreeNode:

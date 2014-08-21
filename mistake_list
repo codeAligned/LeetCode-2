@@ -1,23 +1,25 @@
 111. Merge k Sorted List: 第一次timeout，使用的方法是不短将下一个list合并过来; 第一次接触用堆结构。
 
-30. Populate Next Pointer II: 记得使用nextlevelhead和nextlevelend记录已经完成连接的部分
+63. Palindrome Number: 这个是int不是string，而且不能用extra space
 
-29. LRU Cache: set(key, value)的时候，key存在和不存在，numItems的处理是不一样的 - key存在则不用+1
+54. Populate Next Pointer II: 记得使用nextlevelhead和nextlevelend记录已经完成连接的部分
 
-27. Set Matrix Zero: 用两个flag标记第一行和第一列最后是否通通变为0， 而不是用m[0][0]标记，因为到最后你也不知道m[0][0]表示的是第一行变为0还是第一列变为0
+53. LRU Cache: set(key, value)的时候，key存在和不存在，numItems的处理是不一样的 - key存在则不用+1
 
-25. Linked List Loop: while loop的条件写错了，判断q.next.next之前一定要判断q.next，否则如果q.next是None的话不就编译错误了嘛
+51. Set Matrix Zero: 用两个flag标记第一行和第一列最后是否通通变为0， 而不是用m[0][0]标记，因为到最后你也不知道m[0][0]表示的是第一行变为0还是第一列变为0
 
-24. Spiral Matrix II: 大方向正确 但是怎么实现还要记住: 用Wall的概念，比如往右走，就是贴着wallUp，从wallLeft往wallRight走
+49. Linked List Loop: while loop的条件写错了，判断q.next.next之前一定要判断q.next，否则如果q.next是None的话不就编译错误了嘛
 
-22. Contain Most Water: 虽然记得是从两边往中间靠，但是什么时候start+1 什么时候end-1忘记了
+48. Spiral Matrix II: 大方向正确 但是怎么实现还要记住: 用Wall的概念，比如往右走，就是贴着wallUp，从wallLeft往wallRight走
 
-19. Best Time to Buy and Sell Stock: keep track of two value: topPrice and maxProfit. Traverse backward.
+46. Contain Most Water: 虽然记得是从两边往中间靠，但是什么时候start+1 什么时候end-1忘记了
 
-18. Search Matrix: use global index to simplify searching procedure
+43. Best Time to Buy and Sell Stock: keep track of two value: topPrice and maxProfit. Traverse backward.
 
-17. Permutation: Should return [num] instead of num when len(num) == 1
+42. Search Matrix: use global index to simplify searching procedure
 
-12. Sort color: 没有使用双指针和交换操作，试图使用insert和pop
+41. Permutation: Should return [num] instead of num when len(num) == 1
 
-10. Merge Sorted Array: 没有从后往前
+36. Sort color: 没有使用双指针和交换操作，试图使用insert和pop
+
+34. Merge Sorted Array: 没有从后往前
