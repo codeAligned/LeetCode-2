@@ -19,47 +19,55 @@ __author__ = 'le0nh@rdt'
 # 61. Pass
 # 62. Pass
 # 63. Help | Pass
-# 64. Help | Fail 
+# 64. Help | Fail
 
 # ================================================
 # 64. Trapping Rain Water
+
+
 class Solution:
     # @param A, a list of integers
     # @return an integer
+
     def trap(self, A):
-        if len(A) <= 2: return 0
-        
-        preHighest = [0] * len(A); preHighest[0] = A[0]
-        subHighest = [0] * len(A); subHighest[-1] = A[-1]
-        
+        if len(A) <= 2:
+            return 0
+
+        preHighest = [0] * len(A)
+        preHighest[0] = A[0]
+        subHighest = [0] * len(A)
+        subHighest[-1] = A[-1]
+
         for i in xrange(1, len(A)):
             preHighest[i] = max(preHighest[i - 1], A[i])
         for j in xrange(len(A) - 2, -1, -1):
             subHighest[j] = max(subHighest[j + 1], A[j])
-            
+
         trapwater = 0
-        for k in xrange(1, len(A)-1):
+        for k in xrange(1, len(A) - 1):
             if min(preHighest[k], subHighest[k]) - A[k] > 0:
                 trapwater += min(preHighest[k], subHighest[k]) - A[k]
-        
+
         return trapwater
 
 
 # 63. Palindrome Number
 class Solution:
     # @return a boolean
+
     def isPalindrome(self, x):
-        if x < 0: return False
+        if x < 0:
+            return False
         k = 1
         while x // k >= 10:
             k *= 10
-        
+
         while x > 0:
             if x // k != x % 10:
                 return False
             x = (x - x // k * k) // 10
             k //= 100
-        
+
         return True
 
 
@@ -67,6 +75,7 @@ class Solution:
 class Solution:
     # @param s, a string
     # @return an integer
+
     def lengthOfLastWord(self, s):
         # last index
         tail = len(s) - 1
@@ -76,19 +85,20 @@ class Solution:
                 tail -= 1
             else:
                 break
-        if tail == -1: return 0
-        
-        head = tail-1
+        if tail == -1:
+            return 0
+
+        head = tail - 1
         while head >= 0:
             if s[head] != ' ':
                 head -= 1
             else:
                 break
-        
+
         return tail - head
 
 
-# 61. Minimum Depth of Binary Tree 
+# 61. Minimum Depth of Binary Tree
 # Definition for a  binary tree node
 # class TreeNode:
 #     def __init__(self, x):
@@ -99,9 +109,11 @@ class Solution:
 class Solution:
     # @param root, a tree node
     # @return an integer
+
     def minDepth(self, root):
-        if root == None: return 0
-        if root.left == None and root.right != None: 
+        if root == None:
+            return 0
+        if root.left == None and root.right != None:
             return self.minDepth(root.right) + 1
         elif root.right == None and root.left != None:
             return self.minDepth(root.left) + 1
@@ -120,16 +132,17 @@ class Solution:
 class Solution:
     # @param root, a tree node
     # @return an integer
+
     def sumNumbers(self, root):
         return self.sum(root, 0)
-    
+
     def sum(self, root, preSum):
         if root == None:
             return 0
         elif root.left == None and root.right == None:
             return preSum + root.val
         else:
-            return self.sum(root.left, (root.val + preSum)*10) + self.sum(root.right, (root.val + preSum)*10)
+            return self.sum(root.left, (root.val + preSum) * 10) + self.sum(root.right, (root.val + preSum) * 10)
 
 # 59. Remove Nth Node From End of List
 # Definition for singly-linked list.
@@ -138,28 +151,33 @@ class Solution:
 #         self.val = x
 #         self.next = None
 
+
 class Solution:
     # @return a ListNode
+
     def removeNthFromEnd(self, head, n):
-        if head == None: return None
-        dummy = ListNode(0); dummy.next = head
+        if head == None:
+            return None
+        dummy = ListNode(0)
+        dummy.next = head
         p = dummy
         s = dummy
         for i in xrange(n):
             s = s.next
-        
+
         while s.next != None:
             s = s.next
             p = p.next
-        
+
         p.next = p.next.next
-        
+
         return dummy.next
 
 
 # 58. Combinations
 class Solution:
     # @return a list of lists of integers
+
     def combine(self, n, k):
         A = [i for i in xrange(1, n + 1)]
         return self.dfs(k, A)
@@ -175,18 +193,21 @@ class Solution:
         else:
             ret = []
             for i in xrange(0, len(A)):
-                for j in self.dfs(k - 1, A[i+1:]):
-                    ret.append([A[i]]+j)
+                for j in self.dfs(k - 1, A[i + 1:]):
+                    ret.append([A[i]] + j)
             return ret
 
 
-# 57. Remove Duplicates from Sorted Array II 
+# 57. Remove Duplicates from Sorted Array II
 class Solution:
     # @param A a list of integers
     # @return an integer
+
     def removeDuplicates(self, A):
-        if len(A) <= 2: return len(A)
-        slow = 0; count = 1
+        if len(A) <= 2:
+            return len(A)
+        slow = 0
+        count = 1
         for fast in xrange(1, len(A)):
             if A[fast] == A[slow]:
                 count += 1
@@ -197,62 +218,76 @@ class Solution:
                 count = 1
                 slow += 1
                 A[slow] = A[fast]
-        
+
         return slow + 1
 
 #
 # 56. Edit Distance
+
+
 class Solution:
     # @return an integer
+
     def minDistance(self, word1, word2):
-        len1 = len(word1); len2 = len(word2)
-        if len(word1) == 0: return len2
-        if len(word2) == 0: return len1
-        
+        len1 = len(word1)
+        len2 = len(word2)
+        if len(word1) == 0:
+            return len2
+        if len(word2) == 0:
+            return len1
+
         dp = [[0 for j in xrange(len2 + 1)] for i in xrange(len1 + 1)]
-        
+
         for i in xrange(1, len1 + 1):
             dp[i][0] = i
         for j in xrange(1, len2 + 1):
             dp[0][j] = j
-        
+
         for i in xrange(1, len1 + 1):
             for j in xrange(1, len2 + 1):
-                if word1[i-1] == word2[j-1]: 
-                    dp[i][j] = dp[i-1][j-1]
+                if word1[i - 1] == word2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
                 else:
-                    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
-        
+                    dp[i][j] = min(
+                        dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
+
         return dp[len1][len2]
 
 #
 # 55. Valid Parenthese
+
+
 class Solution:
     # @return a boolean
+
     def isValid(self, s):
         right = ")]}"
         left = "([{"
-        if len(s) == 0: return True
-        if len(s) == 1: return False
-        
-        if s[0] in right: return False
-        
-        dict = {'(':')', '[':']', '{':'}'}
+        if len(s) == 0:
+            return True
+        if len(s) == 1:
+            return False
+
+        if s[0] in right:
+            return False
+
+        dict = {'(': ')', '[': ']', '{': '}'}
         stack = []
         stack.append(s[0])
         i = 1
-        
+
         while i < len(s):
             if s[i] in right:
                 if stack:
                     tmp = stack.pop()
                     if dict[tmp] != s[i]:
                         return False
-                else: return False
+                else:
+                    return False
             else:
                 stack.append(s[i])
             i += 1
-        
+
         if not stack and i == len(s):
             return True
         else:
@@ -267,6 +302,7 @@ class Solution:
 #         self.left = None
 #         self.right = None
 #         self.next = None
+
 
 class Solution:
     # @param root, a tree node

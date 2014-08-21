@@ -1,20 +1,55 @@
 __author__ = 'le0nh@rdt'
+# 4Sum
+# 直接用set要比用list再去重的速度要快一点点（十几毫秒）
+
+
+class Solution:
+    # @return a list of lists of length 4, [[val1,val2,val3,val4]]
+
+    def fourSum(self, num, target):
+        numLen = len(num)
+        d = {}
+        res = set()
+        num.sort()
+        if numLen < 4:
+            return []
+
+        for i in xrange(numLen):
+            for j in xrange(i + 1, numLen):
+                if (num[i] + num[j]) not in d:
+                    d[(num[i] + num[j])] = [(i, j)]
+                else:
+                    d[(num[i] + num[j])].append((i, j))
+
+        for m in xrange(numLen):
+            for n in xrange(m + 1, numLen - 2):
+                key = target - num[m] - num[n]
+                if key in d:
+                    for item in d[key]:
+                        if item[0] > n:
+                            res.add(
+                                (num[m], num[n], num[item[0]], num[item[1]]))
+
+        return [list(i) for i in res]
+
+
 # Sudoku Solver (using mask and 4 times faster than previous one)
 class Solution:
     # @param board, a 9x9 2D array
     # Solve the Sudoku by modifying the input board in-place.
     # Do not return any value.
+
     def solveSudoku(self, board):
-        rmask,cmask,bmask=[0]*9,[0]*9,[0]*9
+        rmask, cmask, bmask = [0] * 9, [0] * 9, [0] * 9
         for i in range(9):
             for j in range(9):
                 b = i / 3 * 3 + j / 3
                 if board[i][j] != '.':
                     change = 1 << (int(board[i][j]) - 1)
-                    self.modifyMask(rmask,cmask,bmask,i,j,b,change)
-        self.dfs(board,0,rmask,cmask,bmask)
-        
-    def modifyMask(self, rmask,cmask,bmask,i,j,b,change):
+                    self.modifyMask(rmask, cmask, bmask, i, j, b, change)
+        self.dfs(board, 0, rmask, cmask, bmask)
+
+    def modifyMask(self, rmask, cmask, bmask, i, j, b, change):
         rmask[i] ^= change
         cmask[j] ^= change
         bmask[b] ^= change
@@ -22,27 +57,28 @@ class Solution:
     def dfs(self, board, k, rmask, cmask, bmask):
         if k == 81:
             return True
-        i,j=k/9,k%9
+        i, j = k / 9, k % 9
         b = i / 3 * 3 + j / 3
         if board[i][j] != '.':
-            return self.dfs(board,k+1,rmask,cmask,bmask)
+            return self.dfs(board, k + 1, rmask, cmask, bmask)
         for digit in range(9):
             change = 1 << digit
             if rmask[i] & change == 0 and cmask[j] & change == 0 and bmask[b] & change == 0:
-                self.modifyMask(rmask,cmask,bmask,i,j,b,change)
-                board[i][j] = str(digit+1)
-                if self.dfs(board,k+1,rmask,cmask,bmask):
+                self.modifyMask(rmask, cmask, bmask, i, j, b, change)
+                board[i][j] = str(digit + 1)
+                if self.dfs(board, k + 1, rmask, cmask, bmask):
                     return True
                 board[i][j] = '.'
-                self.modifyMask(rmask,cmask,bmask,i,j,b,change)
+                self.modifyMask(rmask, cmask, bmask, i, j, b, change)
         return False
-        
+
 
 # Sudoku Solver (Time exceed but works)
 class Solution:
     # @param board, a 9x9 2D array
     # Solve the Sudoku by modifying the input board in-place.
     # Do not return any value.
+
     def solveSudoku(self, board):
         def dfs(board):
             for i in xrange(9):
@@ -55,9 +91,10 @@ class Solution:
                             board[i][j] = '.'
                         return False
             return True
-        
+
         def isValid(x, y):
-            tmp = board[x][y]; board[x][y] = 'D'
+            tmp = board[x][y]
+            board[x][y] = 'D'
             for i in xrange(9):
                 if board[i][y] == tmp:
                     return False
@@ -66,11 +103,11 @@ class Solution:
                     return False
             for i in xrange(3):
                 for j in xrange(3):
-                    if board[(x//3)*3 + i][(y//3)*3 + j]== tmp:
+                    if board[(x // 3) * 3 + i][(y // 3) * 3 + j] == tmp:
                         return False
             board[x][y] = tmp
             return True
-        
+
         dfs(board)
 
 
