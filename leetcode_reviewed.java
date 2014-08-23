@@ -1,9 +1,29 @@
 /**
 * @author: Yucheng Liu
 */
+// ==================================================
+// 5. Pass ; 字符串用{}，python用[]
+// 6. 
+//
+//
+// ==================================================
+/* 5. Best Time to Buy and Sell Stock II */
+public class Solution5 {
+    public int maxProfit(int[] prices) {
+        int maxProfit = 0;
+        for (int i = 0; i < prices.length - 1; i++) {
+            if (prices[i + 1] > prices[i]) { // if price increase
+                maxProfit += prices[i+1] - prices[i];
+            }
+        }
+
+        return maxProfit;
+    }
+}
+
 
 /* 4. Reverse Integer */
-public class Solution {
+public class Solution4 {
     public int reverse(int x) {
         if (x == 0) return 0;
         
@@ -36,7 +56,7 @@ public class Solution {
     }
 }
 
-/* 3. Same Tree*/
+/* 3. Same Tree */
 /**
  * Definition for binary tree
  * public class TreeNode {
@@ -46,7 +66,7 @@ public class Solution {
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class Solution {
+public class Solution3 {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if (p == null && q == null) {
             return true;
@@ -68,7 +88,7 @@ public class Solution {
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class Solution {
+public class Solution2 {
     public int maxDepth(TreeNode root) {
         if (root == null) {
             return 0;
@@ -80,7 +100,7 @@ public class Solution {
 
 
 /* 1. Single Number */
-public class Solution {
+public class Solution1 {
     public int singleNumber(int[] A) {
         int ret = 0;
         for(int i = 0; i < A.length; i++) {
