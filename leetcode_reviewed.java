@@ -5,13 +5,169 @@
 // 5. Pass ; 字符串用{}，python用[]
 // 6. Help | Pass ; 分左右分别递归
 // 7. Pass
-// 8. 
+// 8. Pass
+// 9. Pass
+// 10. Pass
+// 11. Fail | Pass
+// 12. Pass
+// 13. 
 // ==================================================
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
+/* */
+
+
+/* 12. Remove Duplicates from Sorted List */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode p = head;
+        ListNode q = head.next;
+        while (q != null) {
+            if (p.val == q.val) {
+                p.next = q.next;
+                q = q.next;
+            } else if (p.val != q.val) {
+                p = p.next;
+                q = q.next;
+            }
+        }
+        return head;
+
+    }
+}
+
+
+/* 11. Search Insert Position */
+public class Solution {
+    public int searchInsert(int[] A, int target) {
+        
+        int p = 0;
+        if (target <= A[p]) {
+            return p;
+        }
+
+        while (p < A.length - 1) {
+            if (A[p] == target) {
+                return p;
+            } else if (A[p] < target && A[p + 1] >= target) {
+                return p + 1;
+            } else if (A[p] < target && A[p + 1] < target) {
+                p++;
+            }
+        }
+
+        return A.length;
+    
+    }
+}
+
+
+/* 10. Populating Next Right Pointers in Each Node */
+/**
+ * Definition for binary tree with next pointer.
+ * public class TreeLinkNode {
+ *     int val;
+ *     TreeLinkNode left, right, next;
+ *     TreeLinkNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+
+    public void connect(TreeLinkNode root) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.left != null) {
+            root.left.next = root.right;
+        }
+        
+        if (root.next != null && root.right != null) {
+            root.right.next = root.next.left;
+        }
+        
+        connect(root.left);
+        connect(root.right);
+    }
+
+}
+
+
+/* 9. Binary Tree Inorder Traversal */
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        if( root == null) {
+            return res;
+        }
+        
+        if (root.left != null) {
+            res.addAll(inorderTraversal(root.left));    
+        }
+        
+        res.add(root.val);
+        
+        if (root.right != null) {
+            res.addAll(inorderTraversal(root.right));    
+        }
+        
+        return res;
+    
+    }
+}
+
+
+/* 8. Binary Tree Preorder Traversal */
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution8 {
+
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        if( root == null) {
+            return res;
+        }
+        res.add(root.val);
+        if (root.left != null) {
+            res.addAll(preorderTraversal(root.left));    
+        }
+        if (root.right != null) {
+            res.addAll(preorderTraversal(root.right));    
+        }
+        
+        return res;
+    }
+
+}
+
 
 /* 7. Linked List Cycle */
 /**
