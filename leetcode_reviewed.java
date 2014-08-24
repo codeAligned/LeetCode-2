@@ -3,10 +3,64 @@
 */
 // ==================================================
 // 5. Pass ; 字符串用{}，python用[]
-// 6. 
-//
-//
+// 6. Help | Pass ; 分左右分别递归
+// 7. Pass
+// 8. 
 // ==================================================
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+
+/* 7. Linked List Cycle */
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        } else if (head.next == null) {
+            return false;
+        }
+        ListNode dummy = new ListNode(0);
+        ListNode fast = head;
+        ListNode slow = head;
+        
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+/* 6. Unique Binary Search Trees */
+public class Solution6 {
+    public int numTrees(int n) {
+        if (n == 0) return 1;
+        int res = 0;
+        for (int i = 1; i <= n; i++) {
+            res += numTrees(n - i) * numTrees(i - 1);
+        }
+        return res;
+    }
+}
+
+
 /* 5. Best Time to Buy and Sell Stock II */
 public class Solution5 {
     public int maxProfit(int[] prices) {
