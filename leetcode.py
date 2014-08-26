@@ -1,4 +1,20 @@
 __author__ = 'le0nh@rdt'
+# Word Breaker
+class Solution:
+    # @param s, a string
+    # @param dict, a set of string
+    # @return a boolean
+    def wordBreak(self, s, dict):
+        db = [True]
+        for i in xrange(0, len(s)):
+            db.append(False)
+            for j in xrange(i, -1, -1):
+                if db[j] and s[j: i+1] in dict:
+                    db[i+1] = True
+                    break
+        return db[-1]
+
+
 # 4Sum
 # 直接用set要比用list再去重的速度要快一点点（十几毫秒）
 

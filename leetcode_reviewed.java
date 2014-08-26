@@ -10,9 +10,86 @@
 // 10. Pass
 // 11. Fail | Pass
 // 12. Pass
-// 13. 
+// 13. Pass
+// 14. Help | Pass; bit operation
+// 15. Help | Pass; two flag value - sum and max
+// 16. Pass; Simplest way to print array - Arrays.toString(/*some int[] or array[] value*/)
+// 17. 
 // ==================================================
-/* */
+/* 17.  */ 
+
+/* 16. Remove Element */
+public class Solution {
+    public int removeElement(int[] A, int elem) {
+        int p = 0, q = A.length-1;
+        int tmp = 0;
+        while (p <= q) {
+            if (A[q] == elem) {
+                q--;
+            } else if (A[p] == elem) {
+                tmp = A[q];
+                A[q] = A[p];
+                A[p] = tmp;
+                p++;
+                q--;
+            } else {
+                p++;
+            }
+
+        }
+        return p;
+    }
+}
+
+
+/* 15. Maximum Subarray*/
+public class Solution {
+    public int maxSubArray(int[] A) {
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        for (int i = 0; i < A.length; i++) {
+            if (sum < 0) sum = 0;
+            sum += A[i];
+            max = Math.max(sum, max);
+        }
+
+        return max;
+    }
+}
+
+
+/* 14. Single Number II */
+public class Solution {
+    public int singleNumber(int[] A) {      
+        int res = 0;
+        for (int i = 0; i < 32; ++i) {// assume dealing with int32.
+            int bit = 0;
+            for (int j = 0; j < A.length; ++j) {
+                bit = (bit + ((A[j] >> i) & 1)) % 3;
+            }
+            res += (bit << i);
+        }
+        return res;
+    }
+}
+
+
+/* 13. Climb Stairs*/
+public class Solution {
+    public int climbStairs(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+        int[] res = new int[n + 1];
+        res[0] = 1;
+        res[1] = 1;
+        for (int i = 2; i < n + 1; i++) {
+            res[i] = res[i - 1] + res[i - 2];
+        }
+
+        return res[n];
+    }
+}
 
 
 /* 12. Remove Duplicates from Sorted List */
