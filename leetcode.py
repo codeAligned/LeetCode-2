@@ -1,4 +1,95 @@
 __author__ = 'le0nh@rdt'
+# Insert Interval
+# Definition for an interval.
+# class Interval:
+#     def __init__(self, s=0, e=0):
+#         self.start = s
+#         self.end = e
+# Solution 2: 
+# Definition for an interval.
+# class Interval:
+#     def __init__(self, s=0, e=0):
+#         self.start = s
+#         self.end = e
+
+class Solution: 
+# treat newInterval as some cache, merge interval afterward to it. Then decide what to do next
+    # @param intervals, a list of Intervals
+    # @param newInterval, a Interval
+    # @return a list of Interval
+    def insert(self, intervals, newInterval):
+        inserted = False
+        res = []
+        for i in xrange(len(intervals)):
+            if intervals[i].end < newInterval.start:
+                res.append(intervals[i])
+            elif intervals[i].start > newInterval.end:
+                if not inserted:
+                    inserted = True
+                    res.append(newInterval)
+                res.append(intervals[i])
+            else:
+                newInterval.start = min(newInterval.start, intervals[i].start)
+                newInterval.end = max(newInterval.end, intervals[i].end)
+
+        if len(res) == 0 or newInterval.start > res[-1].end:
+            res.append(newInterval)
+
+        return res
+
+# Solution 1: time limit exceeded
+class Solution:
+    # @param intervals, a list of Intervals
+    # @param newInterval, a Interval
+    # @return a list of Interval
+    def insert(self, intervals, newInterval):
+        res = []
+        if len(intervals) == 0: res.append(newInterval); return res
+        if len(intervals) == 1:
+            if self.checkOverlap(intervals[0], newInterval):
+                res.append(Interval(min(intervals[0].start, newInterval.start), max(intervals[0].end, newInterval.end)))
+            else:
+                if newInterval.start > intervals[0].end:
+                    res.append(intervals[0]);res.append(newInterval)
+                else:
+                    res.append(newInterval); res.append(intervals[0])
+            return res
+        alreadyInserted = False
+        noOverlapping = False
+        res.append(intervals[0])
+        i = 1
+        while i < len(intervals):
+            if alreadyInserted:
+                if not noOverlapping:
+                    if res[-1].end < intervals[i].start:
+                        noOverlapping = True
+                        res.append(intervals[i])
+                        i += 1
+                    else:
+                        res[-1].end = max(res[-1].end, intervals[i].end)
+                else:
+                    res.append(intervals[i])
+                    i+=1
+            else:
+                if self.checkOverlap(res[-1], newInterval):
+                    res[-1].start = min(res[-1].start, newInterval.start)
+                    res[-1].end = max(res[-1].end, newInterval.end)
+                    alreadyInserted = True
+                else:
+                    res.append(intervals[i])
+                    i += 1
+        return res
+
+
+    def checkOverlap(self, a, b):
+        if a.start <= b.end <= a.end or \
+                                    a.start <= b.start <= a.end or \
+                                    b.start <= a.start <= b.end or \
+                                    b.start <= a.end <= b.end:
+            return True
+        else: return False
+
+
 # Word Breaker
 class Solution:
     # @param s, a string
