@@ -11,15 +11,143 @@
 // 11. Fail | Pass
 // 12. Pass
 // 13. Pass
-// 14. Help | Pass; bit operation
-// 15. Help | Pass; two flag value - sum and max
-// 16. Pass; Simplest way to print array - Arrays.toString(/*some int[] or array[] value*/)
-// 17. 
+// 14. Help | Pass | bit operation
+// 15. Help | Pass | two flag value - sum and max
+// 16. Pass | Simplest way to print array - Arrays.toString(/*some int[] or array[] value*/)
+// 17. Fail | Pass | didn't return after currQueen == n (again! same mistake!!)
+// 18. Help | Pass | subarray in java: Arrays.copyOfRange(src, 0, 2);
+// 19. Pass
+// 20. Fail | Pass; (Again! should not put ss.empty() in while condition)
 // ==================================================
-/* 17.  */ 
+/* 20. Valid Parentheses */
+public class Solution20 {
+    public boolean isValid(String s) {
+
+        if (s.length() <= 1)
+            return false;
+
+        HashMap<Character, Character> ht = new HashMap<Character, Character>();
+        ht.put('(', ')');
+        ht.put('[', ']');
+        ht.put('{', '}');
+
+        Stack<Character> ss = new Stack<Character>();
+        if (ht.containsKey(s.charAt(0)))
+            ss.push(s.charAt(0));
+        else
+            return false;
+
+        int i = 1;
+        while (i < s.length()) {
+            if (ht.containsKey(s.charAt(i))) {
+                ss.push(s.charAt(i));
+                i++;
+            } else {
+                if (ss.empty() || s.charAt(i) != ht.get(ss.pop())) {
+                    return false;
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        if (i == s.length() && ss.empty())
+            return true;
+        else
+            return false;
+    }
+}
+
+
+/* 19. Balanced Binary Tree */
+public class Solution19 {
+    public boolean isBalanced(TreeNode root) {
+        if (root == null)
+            return true;
+        // if (root.left == null && root.right == null) return true;
+        return isBalanced(root.left) && isBalanced(root.right) && Math.abs(getHeight(root.left) - getHeight(root.right)) <= 1;
+    }
+
+    public int getHeight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        } else if (root.left == null && root.right == null) {
+            return 1;
+        } else if (root.left != null && root.left != null) {
+            return Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+        } else if (root.left != null) {
+            return getHeight(root.left) + 1;
+        } else {
+            return getHeight(root.right) + 1;
+        }
+    }
+}
+
+
+/* 18. Convert Sorted Array to Binary Search Tree */
+public class Solution18 {
+    public TreeNode sortedArrayToBST(int[] num) {
+        if (num.length <= 0)
+            return null;
+
+        int mid = num.length / 2;
+        TreeNode root = new TreeNode(num[mid]);
+
+        if (mid > 0)
+            root.left = sortedArrayToBST(Arrays.copyOfRange(num, 0, mid));
+        if (mid < num.length - 1)
+            root.right = sortedArrayToBST(Arrays.copyOfRange(num, mid + 1,
+                    num.length));
+
+        return root;
+    }
+}
+
+
+/* 17. N-Queens II */ 
+public class Solution17 {
+    public int res = 0;
+
+    public int totalNQueens(int n) {
+        int[] board = new int[n];
+        for (int i = 0; i < n; i++) {
+            board[i] = -1;
+        }
+
+        dps(0, board, n);
+
+        return res;
+
+    }
+
+    public void dps(int currQueen, int[] board, int n) {
+        if (currQueen == n) {
+            res++;
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            boolean isValid = true;
+            for (int k = 0; k < currQueen; k++) {
+                if (board[k] == i) {
+                    isValid = false;
+                    break;
+                } 
+                if ((Math.abs(board[k] - i)) == (currQueen - k)) {
+                    isValid = false;
+                    break;
+                }
+            }
+            if (isValid) {
+                board[currQueen] = i;
+                dps(currQueen + 1, board, n);
+            }
+        }
+    }
+}
+
 
 /* 16. Remove Element */
-public class Solution {
+public class Solution16 {
     public int removeElement(int[] A, int elem) {
         int p = 0, q = A.length-1;
         int tmp = 0;
@@ -43,7 +171,7 @@ public class Solution {
 
 
 /* 15. Maximum Subarray*/
-public class Solution {
+public class Solution15 {
     public int maxSubArray(int[] A) {
         int max = Integer.MIN_VALUE;
         int sum = 0;
@@ -59,7 +187,7 @@ public class Solution {
 
 
 /* 14. Single Number II */
-public class Solution {
+public class Solution14 {
     public int singleNumber(int[] A) {      
         int res = 0;
         for (int i = 0; i < 32; ++i) {// assume dealing with int32.
@@ -75,7 +203,7 @@ public class Solution {
 
 
 /* 13. Climb Stairs*/
-public class Solution {
+public class Solution13 {
     public int climbStairs(int n) {
         if (n <= 1) {
             return 1;
@@ -104,7 +232,7 @@ public class Solution {
  *     }
  * }
  */
-public class Solution {
+public class Solution12 {
     public ListNode deleteDuplicates(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -127,7 +255,7 @@ public class Solution {
 
 
 /* 11. Search Insert Position */
-public class Solution {
+public class Solution11 {
     public int searchInsert(int[] A, int target) {
         
         int p = 0;
@@ -160,7 +288,7 @@ public class Solution {
  *     TreeLinkNode(int x) { val = x; }
  * }
  */
-public class Solution {
+public class Solution10 {
 
     public void connect(TreeLinkNode root) {
         if (root == null) {
@@ -192,7 +320,7 @@ public class Solution {
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class Solution {
+public class Solution9 {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<Integer>();
         if( root == null) {
