@@ -19,6 +19,68 @@
 // 19. Pass
 // 20. Fail | Pass; (Again! should not put ss.empty() in while condition)
 // ==================================================
+
+/* 118. Spiral Matrix */
+public class Solution118 {
+
+    private static final int RIGHT = 0;
+    private static final int DOWN = 1;
+    private static final int LEFT = 2;
+    private static final int UP = 3;
+
+    public List<Integer> spiralOrder(int[][] matrix) {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        if(matrix == null || matrix.length == 0) return res; 
+        
+        int mHeight = matrix.length;
+        int mWidth = matrix[0].length;
+        int Wall_Up = 0;
+        int Wall_Right = mWidth - 1;
+        int Wall_Bottom = mHeight - 1;
+        int Wall_Left = 0;
+        
+        int direction = 0;
+
+        while (Wall_Left <= Wall_Right && Wall_Up <= Wall_Bottom) {
+            switch (direction) {
+            case 0:
+                for (int i = Wall_Left; i <= Wall_Right; i++) {
+                    res.add(matrix[Wall_Up][i]);
+                }
+                Wall_Up++;
+                direction = (direction + 1) % 4;
+                break;
+            case 1:
+                for (int i = Wall_Up; i <= Wall_Bottom; i++) {
+                    res.add(matrix[i][Wall_Right]);
+                }
+                Wall_Right--;
+                direction = (direction + 1) % 4;
+                break;
+            case 2:
+                for (int i = Wall_Right; i >= Wall_Left; i--) {
+                    res.add(matrix[Wall_Bottom][i]);
+                }
+                Wall_Bottom--;
+                direction = (direction + 1) % 4;
+                break;
+            case 3:
+                for (int i = Wall_Bottom; i >= Wall_Up; i--) {
+                    res.add(matrix[i][Wall_Left]);
+                }
+                Wall_Left++;
+                direction = (direction + 1) % 4;
+                break;
+            default:
+                break;
+            }
+        }
+        
+        return res;
+    }
+}
+
+
 /* 20. Valid Parentheses */
 public class Solution20 {
     public boolean isValid(String s) {

@@ -1,4 +1,82 @@
 __author__ = 'le0nh@rdt'
+# Sort List
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+# 解法1： 归并法，但是超时了
+class Solution:
+    # @param head, a ListNode
+    # @return a ListNode
+    def sortList(self, head):
+        if head == None: return head
+        if head.next == None: return head
+
+        slow = head
+        fast = head
+
+        while fast.next and fast.next.next:
+            fast = fast.next.next
+            slow = slow.next
+
+        head1 = head
+        head2 = slow.next
+        slow.next = None
+
+        head1 = self.sortList(head1)
+        head2 = self.sortList(head2)
+
+        return self.merge(head1, head2)
+
+
+    def merge(self, head1, head2):
+        if head1 == None: return head2
+        elif head2 == None: return head1
+
+        dummy = ListNode(0)
+        p = dummy
+        while head1 and head2:
+            if head1.val <= head2.val:
+                p.next = head1
+                head1 = head1.next
+                p = p.next
+            elif head1.val > head2.val:
+                p.next = head2
+                head2 = head2.next
+                p = p.next
+
+        if head2 == None and head1 != None:
+            p.next = head1
+        elif head2 != None and head1 == None:
+            p.next = head2
+
+        return dummy.next
+
+
+# Restore IP Address
+class Solution:
+    # @param s, a string
+    # @return a list of strings
+    def restoreIpAddresses(self, s):
+        def dfs(s, blocks, ips, ip):
+            if blocks == 4:
+                if s == '':
+                    ips.append(ip[1:])
+                return
+            for i in xrange(1, 4):
+                if i <= len(s):
+                    if int(s[:i]) <= 255:
+                        dfs(s[i:], blocks + 1, ips, ip + '.' + s[:i])
+                    if s[0] == '0':
+                        break
+
+        ips = []
+        dfs(s, 0, ips, '')
+        return ips
+
+
 # Insert Interval
 # Definition for an interval.
 # class Interval:
