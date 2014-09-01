@@ -1,23 +1,87 @@
 __author__ = 'le0nh@rdt'
+# Permutation Sequence
+# 2. 
+class Solution:
+    # @return a string
+    def getPermutation(self, n, k):
+        s = ''
+        k -= 1
+        blocksize = math.factorial(n - 1)
+        factorial = blocksize * n
+        num = [i for i in xrange(1, n + 1)]
+        res = ''
+        for i in reversed(xrange(1, n + 1)):
+            res += str(num[k / blocksize])
+            num.remove(num[k / blocksize])
+            if i != 1:
+                k = k % blocksize
+                blocksize /= i - 1
+
+        return res
+        
+# 1. 超时
+class Solution:
+    # @return a string
+    def getPermutation(self, n, k):
+        s = ''
+        for i in xrange(1, n + 1):
+            s += str(i)
+
+        return self.recPerm(n, s, k - 1)
+
+    def recPerm(self, n, s, k):
+        if n == 1: return s
+        blocksize = math.factorial(n - 1)
+        tot = blocksize * n
+        numOfBlock = k / blocksize
+        return s[numOfBlock] + self.recPerm(n - 1, s[:numOfBlock] + s[numOfBlock + 1:], k % blocksize)
+
+
+# Merge Intervals
+# Definition for an interval.
+# class Interval:
+#     def __init__(self, s=0, e=0):
+#         self.start = s
+#         self.end = e
+
+class Solution:
+    # @param intervals, a list of Interval
+    # @return a list of Interval
+    def merge(self, intervals):
+        if len(intervals) == 0: return []
+        if len(intervals) == 1: return intervals
+        intervals.sort(key=lambda x:x.start)
+        res = []
+        tmp = intervals[0]
+        for i in xrange(1, len(intervals)):
+            if intervals[i].start <= tmp.end:
+                tmp.start = min(tmp.start, intervals[i].start)
+                tmp.end = max(tmp.end, intervals[i].end)
+            elif intervals[i].start > tmp.end:
+                res.append(tmp)
+                tmp = intervals[i]
+        
+        res.append(tmp)
+        return res
+
+
 # Sort List
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
-
-# 解法1： 归并法，但是超时了
 class Solution:
     # @param head, a ListNode
     # @return a ListNode
     def sortList(self, head):
-        if head == None: return head
-        if head.next == None: return head
+        if head is None: return head
+        if head.next is None: return head
 
         slow = head
         fast = head
 
-        while fast.next and fast.next.next:
+        while fast.next is not None and fast.next.next is not None:
             fast = fast.next.next
             slow = slow.next
 
@@ -30,14 +94,13 @@ class Solution:
 
         return self.merge(head1, head2)
 
-
     def merge(self, head1, head2):
-        if head1 == None: return head2
-        elif head2 == None: return head1
+        if head1 is None: return head2
+        elif head2 is None: return head1
 
         dummy = ListNode(0)
         p = dummy
-        while head1 and head2:
+        while head1 is not None and head2 is not None:
             if head1.val <= head2.val:
                 p.next = head1
                 head1 = head1.next
@@ -47,9 +110,9 @@ class Solution:
                 head2 = head2.next
                 p = p.next
 
-        if head2 == None and head1 != None:
+        if head2 is None and head1 is not None:
             p.next = head1
-        elif head2 != None and head1 == None:
+        elif head2 is not None and head1 is None:
             p.next = head2
 
         return dummy.next
