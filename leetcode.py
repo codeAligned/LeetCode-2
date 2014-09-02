@@ -1,4 +1,70 @@
 __author__ = 'le0nh@rdt'
+# Edit Distance
+class Solution:
+    # @return an integer
+    def minDistance(self, word1, word2):
+        len_word1 = len(word1)
+        len_word2 = len(word2)
+        dp = [[0 for i in xrange(len_word1 + 1)] for j in xrange(len_word2 + 1)]
+
+        for j in xrange(len_word1 + 1):
+            dp[0][j] = j
+        for i in xrange(len_word2 + 1):
+            dp[i][0] = i
+
+        for i in xrange(1, len_word2 + 1):
+            for j in xrange(1, len_word1 + 1):
+                if word1[j - 1] == word2[i - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                else:
+                    dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + 1)
+
+        return dp[-1][-1]
+        
+
+# Two Sum
+class Solution1:
+    # @return a tuple, (index1, index2)
+    def twoSum(self, num, target):
+        dict = {}
+        for i in xrange(len(num)):
+            if dict.has_key(num[i]):
+                dict[num[i]].append(i)
+            else:
+                dict[num[i]] = [i]
+
+        for x in dict.iterkeys():
+            if dict.has_key(target - x):
+                if 2 * x == target:  # key same
+                    return (min(dict[x][0] + 1, dict[x][1] + 1), max(dict[x][0] + 1, dict[x][1] + 1))
+                else:
+                    return (min(dict[x][0] + 1, dict[target - x][0] + 1), max(dict[x][0] + 1, dict[target - x][0] + 1))
+
+class Solution2:
+    def twoSum(self, num, target):
+        numbers = sorted(num)
+        tuple = []
+        start = 0
+        end = len(numbers) - 1
+
+        while start < end:
+            sum = numbers[start] + numbers[end]
+            if sum == target:
+                for i in xrange(len(num)):
+                    if num[i] == numbers[start]:
+                        tuple.append(i + 1)
+                    elif num[i] == numbers[end]:
+                        tuple.append(i + 1)
+                    if len(tuple) == 2: break
+                break
+            elif sum > target:
+                end -= 1
+            elif sum < target:
+                start += 1
+
+        return (tuple[0], tuple[1])
+
+
 # Permutation Sequence
 # 2. 
 class Solution:
