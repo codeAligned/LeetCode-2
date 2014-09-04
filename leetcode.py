@@ -1,4 +1,108 @@
 __author__ = 'le0nh@rdt'
+# Longest Palindromic String
+# 1. Time exceeded. 
+class Solution:
+    # @return a string
+    def longestPalindrome(self, s):
+        longestMid1 = 0; longestMid2 = 0
+        longestWidth = 0
+        longestLength = 0
+
+        for mid1 in xrange(len(s)):
+            # Odd case
+            width = 0
+            mid2 = mid1
+            while mid1 - width >= 0 and mid2 + width < len(s) and s[mid1 - width] == s[mid2 + width]:
+                width += 1
+            if mid2 - mid1 + 1 + 2*(width - 1) > longestLength:
+                longestWidth = width - 1
+                longestMid1 = mid1; longestMid2 = mid2
+                longestLength = longestMid2 - longestMid1 + 1 + 2*(longestWidth)
+
+            # Even case
+            mid2 = mid1 + 1
+            if mid2 < len(s) and s[mid1] == s[mid2]:
+                width = 0
+                while mid1 - width >= 0 and mid2 + width < len(s) and s[mid1 - width] == s[mid2 + width]:
+                    width += 1
+                if mid2 - mid1 + 1 + 2*(width - 1) > longestLength:
+                    longestWidth = width - 1
+                    longestMid1 = mid1; longestMid2 = mid2
+                    longestLength = longestMid2 - longestMid1 + 1 + 2*(longestWidth)
+
+        return s[longestMid1 - longestWidth:longestMid2 + longestWidth + 1]
+
+
+# Implement strStr() 
+class Solution:
+    # @param haystack, a string
+    # @param needle, a string
+    # @return a string or None
+    def strStr(self, haystack, needle):
+        lenneedle = len(needle); lenhaystack = len(haystack)
+        
+        i = 0
+        while i < lenhaystack - lenneedle + 1:
+            j = 0
+            while j < lenneedle:
+                if haystack[i] == needle[j]:
+                    j += 1
+                    i += 1
+                else:
+                    i += 1
+                    break
+            i -= j
+            if j == lenneedle:
+                return haystack[i:]
+
+        return None
+
+
+# Reorder List
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param head, a ListNode
+    # @return nothing
+    def reorderList(self, head):
+        if head is None or head.next is None or head.next.next is None:
+            return head
+
+        fast = head
+        slow = head
+        while fast.next is not None and fast.next.next is not None:
+            fast = fast.next.next
+            slow = slow.next
+
+        head1 = head
+        head2 = slow.next
+        slow.next = None
+        head2 = self.reverseList(head2)
+
+        self.merge(head1, head2)
+
+    def reverseList(self, head):
+        prev = None
+        while head is not None:
+            tmp = head.next
+            head.next = prev
+            prev = head
+            head = tmp
+        return prev
+
+    def merge(self, head1, head2):
+        while head2 is not None:
+            prev = head2
+            head2 = head2.next
+            prev.next = head1.next
+            head1.next = prev
+            head1 = head1.next.next
+
+
 # Edit Distance
 class Solution:
     # @return an integer
