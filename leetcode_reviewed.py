@@ -20,11 +20,67 @@ __author__ = 'le0nh@rdt'
 # 62. Pass
 # 63. Help | Pass
 # 64. Help | Fail
-
+# 65. Help | Pass
+# 66. Pass
+# 67. Help | Pass ; use HashMap/Dictionary
 # ================================================
+# 67. Longest Consecutive Sequence
+class Solution:
+    # @param num, a list of integer
+    # @return an integer
+    def longestConsecutive(self, num):
+        dict = {}
+        for i in num:
+            dict[i] = False
+        longest = 0
+        for key in dict.iterkeys():
+            tmp = 1
+            if dict[key] is False:
+                dict[key] = True
+                key1 = key
+                key2 = key
+                while dict.has_key(key1 + 1) and dict[key1 + 1] is False:
+                    dict[key1 + 1] = True
+                    tmp += 1
+                    key1 += 1
+                while dict.has_key(key2 - 1) and dict[key2 - 1] is False:
+                    dict[key2 - 1] = True
+                    tmp += 1
+                    key2 -= 1
+                longest = max(tmp, longest)
+        return longest
+
+
+# 66. Flatten Binary Tree to Linked List
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return nothing, do it in place
+    def flatten(self, root):
+        if root is None:
+            return root
+        if root.right is not None:
+            self.flatten(root.right)
+        if root.left is not None:
+            self.flatten(root.left)
+            ptr = root.left
+            while ptr.right is not None:
+                ptr = ptr.right
+            ptr.right = root.right
+            root.right = root.left
+            root.left = None
+
+
+# 65. Gray Code
+i ^ (i>>1)
+
 # 64. Trapping Rain Water
-
-
 class Solution:
     # @param A, a list of integers
     # @return an integer
