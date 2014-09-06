@@ -1,4 +1,19 @@
 __author__ = 'le0nh@rdt'
+# Candy
+class Solution:
+    # @param ratings, a list of integer
+    # @return an integer
+    def candy(self, ratings):
+        candynum = [1 for i in xrange(len(ratings))]
+        for i in xrange(1, len(ratings)):
+            if ratings[i] > ratings[i - 1]:
+                candynum[i] = candynum[i - 1] + 1
+        for i in xrange(len(ratings) - 2, -1, -1):
+            if ratings[i + 1] < ratings[i] and candynum[i + 1] >= candynum[i]:
+                candynum[i] = candynum[i + 1] + 1
+        return sum(candynum)
+        
+
 # Longest Palindromic String
 # 1. Time exceeded. 
 class Solution:
