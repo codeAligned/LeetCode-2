@@ -1,4 +1,172 @@
 __author__ = 'le0nh@rdt'
+# Longest Valid Parenthneses
+class Solution:
+    # @param s, a string
+    # @return an integer
+    def longestValidParentheses(self, s):
+        maxlen = 0
+        stack = []
+        last = -1
+        for i in range(len(s)):
+            if s[i]=='(':
+                stack.append(i)     # push the INDEX into the stack!!!!
+            else:
+                if stack == []:
+                    last = i
+                else:
+                    stack.pop()
+                    if stack == []:
+                        maxlen = max(maxlen, i-last)
+                    else:
+                        maxlen = max(maxlen, i-stack[len(stack)-1])
+        return maxlen
+
+
+# Simplify Path
+class Solution:
+    # @param path, a string
+    # @return a string
+    def simplifyPath(self, path):
+        stack = []
+        i = 0
+        res = ''
+        while i < len(path):
+            end = i + 1
+            while end < len(path) and path[end] != '/':
+                end += 1
+            sub = path[i + 1:end]
+            if len(sub) > 0:
+                if sub == '..':
+                    if stack != []: stack.pop()
+                elif sub != '.':
+                    stack.append(sub)
+            i = end
+
+        if stack == []: return '/'
+        for i in stack:
+            res += '/' + i
+        return res
+
+
+# Binary Tree Maximum Path Sum 
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+
+class Solution:
+    # @param root, a tree node
+    # @return an integer
+    def maxSum(self, root):
+        lmax = 0;
+        rmax = 0
+        sum = root.val
+        if root.left:
+            lmax = self.maxSum(root.left)
+            if lmax > 0:
+                sum += lmax
+        if root.right:
+            rmax = self.maxSum(root.right)
+            if rmax > 0:
+                sum += rmax
+
+        if sum > Solution.max:
+            Solution.max = sum
+        return max(root.val, lmax + root.val, rmax + root.val)
+
+    def maxPathSum(self, root):
+        if root is None: return 0
+        Solution.max = -10000000
+        self.maxSum(root)
+        return Solution.max
+
+# Word Break II
+# 2. dfs之前先判断这个字符串有没有必要进行dfs（剩下的字符串s能否由dict中的词构成），决策树剪枝
+class Solution:
+    # @param s, a string
+    # @param dict, a set of string
+    # @return a list of strings
+    def wordBreak(self, s, dict):
+        def ispossible(s):
+            db = [True]
+            for i in xrange(0, len(s)):
+                db.append(False)
+                for j in xrange(i, -1, -1):
+                    if db[j] and s[j: i + 1] in dict:
+                        db[i + 1] = True
+                        break
+            return db[-1]
+
+        def dfs(s, tmp):
+            if ispossible(s):
+                if len(s) == 0:
+                    res.append(tmp[1:])
+                for i in xrange(1, len(s) + 1):
+                    if s[:i] in dict:
+                        dfs(s[i:], tmp + ' ' + s[:i])
+
+        res = []
+        dfs(s, '')
+        return res
+
+# 1. 单纯dfs，Time out
+class Solution:
+    # @param s, a string
+    # @param dict, a set of string
+    # @return a list of strings
+    def wordBreak(self, s, dict):
+        res = []
+
+        def dfs(currIndex, s, tmp):
+            if s[currIndex:] in dict:
+                res.append(tmp + ' ' + s[currIndex:])
+                return
+
+            for currIndex in xrange(len(s)):
+                # valid = True
+                if s[:currIndex] in dict:
+                    dfs(0, s[currIndex:], tmp + ' ' + s[:currIndex])
+
+        dfs(0, s, "")
+
+        for x in xrange(len(res)):
+            res[x] = res[x][1:]
+
+        return res
+
+
+# Divide Two Integers
+class Solution:
+    # @return an integer
+    def divide(self, dividend, divisor):
+        res = 0; count = 0; sum = 0
+        
+        if divisor ^ dividend < 0:
+            isnegtive = True
+        else:
+            isnegtive = False
+        
+        divisor = abs(divisor)
+        dividend = abs(dividend)
+        if divisor > dividend: return 0
+                
+        while dividend >= divisor:
+            sum = divisor
+            count = 1
+            while sum + sum <= dividend:
+                sum += sum
+                count += count
+            dividend -= sum
+            res += count
+            
+        if isnegtive:
+            return -res
+        else: 
+            return res
+
 
 # Interleaving String
 class Solution:
