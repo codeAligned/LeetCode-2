@@ -1,4 +1,52 @@
 __author__ = 'le0nh@rdt'
+
+# Interleaving String
+class Solution:
+    # @return a boolean
+    def isInterleave(self, s1, s2, s3):
+        len1 = len(s1)
+        len2 = len(s2)
+        len3 = len(s3)
+        if len1 + len2 != len3:
+            return False
+        dp = [[0 for i in xrange(len2 + 1)] for j in xrange(len1 + 1)]
+        for i in xrange(len1 + 1):
+            for j in xrange(len2 + 1):
+                if i > 0 and dp[i - 1][j] == i - 1 + j and s1[i - 1] == s3[i + j - 1]:
+                    dp[i][j] = i + j
+                if j > 0 and dp[i][j - 1] == i + j - 1 and s2[j - 1] == s3[i + j - 1]:
+                    dp[i][j] = i + j
+        return dp[len1][len2] == len3
+
+
+# Multiply Strings
+class Solution:
+    # @param num1, a string
+    # @param num2, a string
+    # @return a string
+    def multiply(self, num1, num2):
+        num1 = num1[::-1]; num2 = num2[::-1]
+        array = [0 for i in xrange(len(num1) + len(num2) + 1)]
+        for j in xrange(len(num2)):
+            for i in xrange(len(num1)):
+                array[i + j] += int(num1[i]) * int(num2[j])
+
+        for i in xrange(len(array) - 1):
+            digit = array[i] % 10
+            carry = array[i] / 10
+            array[i] = digit
+            array[i + 1] += carry
+
+        end = len(array) - 1
+        while end > 0 and array[end] == 0:
+            end -= 1
+
+        res = ""
+        for i in xrange(end, -1, -1):
+            res += str(array[i])
+        
+        return res
+
 # Candy
 class Solution:
     # @param ratings, a list of integer
