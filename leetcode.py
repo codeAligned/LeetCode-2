@@ -1,7 +1,129 @@
 __author__ = 'le0nh@rdt'
-# Longest Valid Parenthneses
+# Reverse Words in a String
+# 2.
 class Solution:
     # @param s, a string
+    # @return a string
+    def reverseWords(self, s):
+        return " ".join(s.split()[::-1])
+        
+# 1. this solution can output the excat reverse result including trailing or leading spaces, but not what LeetCode expected.
+class Solution:
+    # @param s, a string
+    # @return a string
+    def reverseWords(self, s):
+        print len(s)
+        s = '#' + s[::-1]
+        res = ""
+        i = 0
+        while i < len(s):
+            if s[i] == ' ' or s[i] == '#':
+                j = 1
+                while i + j < len(s):
+                    if s[i + j] != ' ':
+                        j += 1
+                    else:
+                        break
+                if s[i] == '#':
+                    res += s[i + j - 1 : i : -1]
+                else:
+                    res += s[i + j - 1 : i : -1] + ' '
+                i = i + j
+            else:
+                i += 1
+
+        return res
+
+
+# Evaluate Reverse Polish Notation
+class Solution:
+    # @param tokens, a list of string
+    # @return an integer
+    def evalRPN(self, tokens):
+        stack = []
+        operator = "+-*/"
+        p = 0
+        res = 0
+        while p < len(tokens):
+            if tokens[p] not in operator:
+                stack.append(tokens[p])
+            else:
+                num2 = int(stack.pop())
+                num1 = int(stack.pop())
+                if tokens[p] == '+':
+                    tmp = num1 + num2
+                elif tokens[p] == '-':
+                    tmp = num1 - num2
+                elif tokens[p] == '*':
+                    tmp = num1 * num2
+                elif tokens[p] == '/':
+                    if num1 ^ num2 < 0:
+                        tmp = -(abs(num1) / abs(num2))
+                    else:
+                        tmp = num1 / num2
+                stack.append(str(tmp))
+            
+            p += 1
+
+        return int(stack.pop())
+
+
+# Minimum Window Substring
+class Solution:
+    # @return a string
+    def minWindow(self, S, T):
+        d, dt = {}, dict.fromkeys(T, 0)
+        for c in T: d[c] = d.get(c, 0) + 1
+        pi, pj, cont = 0, 0, 0
+        ans = ""
+        while pj < len(S):
+            if S[pj] in dt:
+                if dt[S[pj]] < d[S[pj]]:
+                    cont += 1
+                dt[S[pj]] += 1;
+            if cont == len(T):
+                while pi < pj:
+                    if S[pi] in dt:
+                        if dt[S[pi]] <= d[S[pi]]:
+                            break;
+                        dt[S[pi]] -= 1;
+                    pi+= 1
+                if ans == '' or pj - pi < len(ans):
+                    ans = S[pi:pj+1]
+                dt[S[pi]] -= 1
+                pi += 1
+                cont -= 1
+            pj += 1
+        return ans
+
+
+# Median of Two Sorted Array
+class Solution:
+    # @return a float
+    def findMedianSortedArrays(self, A, B):
+        lenA = len(A); lenB = len(B)
+        if (lenA + lenB) % 2 == 1:
+            return self.getKthNumber(A, B, (lenA+lenB)/2 + 1)
+        else:
+            return (self.getKthNumber(A, B, (lenA+lenB)/2 + 1) + self.getKthNumber(A, B, (lenA+lenB)/2)) * 0.5
+
+    def getKthNumber(self, A, B, k):
+        lenA = len(A); lenB = len(B)
+        if lenA > lenB: return self.getKthNumber(B, A, k)
+        if lenA == 0: return B[k-1]
+        if k == 1:
+            return min(A[0], B[0])
+        pa = min(k/2, lenA)
+        pb = k - pa
+        if A[pa - 1] <= B[pb - 1]:
+            return self.getKthNumber(A[pa:], B, pb)
+        else:
+            return self.getKthNumber(A, B[pb:], pa)
+
+
+# Longest Valid Parenthneses
+class Solution:
+    # @param s, a string1
     # @return an integer
     def longestValidParentheses(self, s):
         maxlen = 0
