@@ -1,4 +1,42 @@
 __author__ = 'le0nh@rdt'
+# Surrounded Regions
+class Solution:
+    # @param board, a 2D array
+    # Capture all regions by modifying the input board in-place.
+    # Do not return any value.
+    def solve(self, board):
+        def changecolor(x, y):
+            if x < 0 or x >= len(board) or y < 0 or y >= len(board[0]) or board[x][y] != 'O':
+                return
+            queue.append((x, y))
+            board[x][y] = '#'
+
+        def bfs(x, y):
+            if board[x][y] == 'O':
+                queue.append((x, y))
+                changecolor(x, y)
+            while queue:
+                curr = queue.pop()
+                x = curr[0]; y = curr[1]
+                changecolor(x - 1, y); changecolor(x + 1, y); changecolor(x, y - 1); changecolor(x, y + 1)
+
+        if len(board) == 0: return
+        queue = []
+        for j in xrange(len(board[0])):
+            bfs(0, j)
+            bfs(len(board) - 1, j)
+        for i in xrange(len(board)):
+            bfs(i, 0)
+            bfs(i, len(board[0]) - 1)
+
+
+        for j in xrange(len(board[0])):
+            for i in xrange(len(board)):
+                if board[i][j] == 'O':
+                    board[i][j] = 'X'
+                elif board[i][j] == '#':
+                    board[i][j] = 'O'
+
 # Reverse Words in a String
 # 2.
 class Solution:
