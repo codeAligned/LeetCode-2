@@ -1,5 +1,7 @@
 111. Merge k Sorted List: 第一次timeout，使用的方法是不短将下一个list合并过来; 第一次接触用堆结构。
 
+68. Is Valid Sudoku: 用比较set和原list的长度更加巧妙。
+
 65. Gray Code: 通项公式为第i项 = (i XOR i >> 1)
 
 63. Palindrome Number: 这个是int不是string，而且不能用extra space

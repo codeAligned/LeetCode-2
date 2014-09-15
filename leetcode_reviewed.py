@@ -23,7 +23,168 @@ __author__ = 'le0nh@rdt'
 # 65. Help | Pass
 # 66. Pass
 # 67. Help | Pass ; use HashMap/Dictionary
+# 68. Help | Fail | Pass ; use temprary array to record duplicates
+# 69. Pass
+# 70. Help | Help ; !!! Review, dfs !!!
+# 71. Fail | Fail | Pass
+# 72. Pass
 # ================================================
+# 72. 
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+#
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    # @param head, a list node
+    # @return a tree node
+    def sortedListToBST(self, head):
+        if head is None: return None
+        ptr = head
+        values = []
+        while ptr is not None:
+            values.append(ptr.val)
+            ptr = ptr.next
+        return self.dfs(values)
+
+    def dfs(self, values):
+        if len(values) == 0: return None
+        if len(values) == 1:
+            return TreeNode(values[0])
+        mid = len(values) / 2
+        root = TreeNode(values[mid])
+        root.left = self.dfs(values[:mid])
+        root.right = self.dfs(values[mid + 1:])
+        return root
+
+
+# 71. Search for a Range
+class Solution:
+    # @param A, a list of integers
+    # @param target, an integer to be searched
+    # @return a list of length 2, [index1, index2]
+    def searchRange(self, A, target):
+        start = 0
+        end = len(A) - 1
+        mid = (start + end) / 2
+        while -1 < start <= end < len(A):
+            mid = (start + end) / 2
+            if A[mid] > target:
+                end = mid - 1
+            elif A[mid] < target:
+                start = mid + 1
+            else:
+                break
+
+        if A[mid] != target:
+            return [-1, -1]
+
+        toleft = 1; toright = 1
+        while mid - toleft > -1 and A[mid - toleft] == target:
+            toleft += 1
+        while mid + toright < len(A) and A[mid + toright] == target:
+            toright += 1
+
+        return [mid - toleft + 1, mid + toright - 1]
+
+
+# 70. Subsets
+class Solution:
+    # @param S, a list of integer
+    # @return a list of lists of integer
+    def subsets(self, S):
+        def dfs(valuelist, depth, start):
+            res.append(valuelist)
+            if depth == len(S): return
+            for i in xrange(start, len(S)):
+                dfs(valuelist + [S[i]], depth + 1, i + 1)
+
+        S.sort()
+        res = []
+        dfs([], 0, 0)
+        return res
+
+# 69. Unique Paths II
+class Solution:
+    # @param obstacleGrid, a list of lists of integers
+    # @return an integer
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        if len(obstacleGrid) == 0:
+            return 0
+
+        dp = [[0 for i in xrange(len(obstacleGrid[0]))] for i in xrange(len(obstacleGrid))]
+
+        # init
+        if obstacleGrid[0][0] == 1:
+            return 0
+        dp[0][0] = 1
+
+        for j in xrange(1, len(obstacleGrid[0])):
+            if obstacleGrid[0][j] != 1:
+                dp[0][j] = dp[0][j - 1]
+            else:
+                dp[0][j] = 0
+        
+        for i in xrange(1, len(obstacleGrid)):
+            if obstacleGrid[i][0] != 1:
+                dp[i][0] = dp[i - 1][0]
+            else:
+                dp[i][0] = 0
+        
+        for i in xrange(1, len(obstacleGrid)):
+            for j in xrange(1, len(obstacleGrid[0])):
+                if obstacleGrid[i][j] != 1:
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+                else:
+                    dp[i][j] = 0
+        
+        return dp[-1][-1]
+
+
+# 68. Valid Sudoku
+class Solution:
+    # @param board, a 9x9 2D array
+    # @return a boolean
+    def isValidSudoku(self, board):
+        for row in xrange(len(board)):
+            tmp = []
+            for col in xrange(len(board[0])):
+                if board[row][col] != '.':
+                    if board[row][col] not in tmp:
+                        tmp.append(board[row][col])
+                    else:
+                        return False
+
+        for col in xrange(len(board[0])):
+            tmp = []
+            for row in xrange(len(board)):
+                if board[row][col] != '.':
+                    if board[row][col] not in tmp:
+                        tmp.append(board[row][col])
+                    else:
+                        return False
+
+        for x in [0, 3, 6]:
+            for y in [0, 3, 6]:
+                tmp = []
+                for row in [0,1,2]:
+                    for col in [0,1,2]:
+                        if board[x + row][y + col] != '.':
+                            if board[x + row][y + col] not in tmp:
+                                tmp.append(board[x + row][y + col])
+                            else:
+                                return False
+        return True
+
+
 # 67. Longest Consecutive Sequence
 class Solution:
     # @param num, a list of integer
