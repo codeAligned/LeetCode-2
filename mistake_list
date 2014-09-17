@@ -1,5 +1,7 @@
 111. Merge k Sorted List: 第一次timeout，使用的方法是不短将下一个list合并过来; 第一次接触用堆结构。
 
+74. Unique Binary Search Tree II: dfs构建的时候比较巧妙。
+
 68. Is Valid Sudoku: 用比较set和原list的长度更加巧妙。
 
 65. Gray Code: 通项公式为第i项 = (i XOR i >> 1)

@@ -28,7 +28,84 @@ __author__ = 'le0nh@rdt'
 # 70. Help | Help ; !!! Review, dfs !!!
 # 71. Fail | Fail | Pass
 # 72. Pass
+# 73. Help | Pass
+# 74. Help | Pass 
+# 75. Fail | Pass
 # ================================================
+# 75. Longest Common Prefix 
+class Solution:
+    # @return a string
+    def longestCommonPrefix(self, strs):
+        if len(strs) == 0:
+            return ''
+        
+        prefixlen = 0
+        while True:
+            prefix = strs[0][:prefixlen]
+            for i in xrange(len(strs)):
+                if prefixlen > len(strs[i]) or prefix != strs[i][:prefixlen]:
+                    return strs[0][:prefixlen-1]
+            prefixlen += 1
+
+
+# 74. Unique Binary Search Tree ii
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @return a list of tree node
+    def generateTrees(self, n):
+        res = self.dfs(1, n)
+        return res
+
+    def dfs(self, start, end):
+        if start > end:
+            return [None]
+        res = []
+        for val in xrange(start, end + 1):
+            LeftTree = self.dfs(start, val - 1)
+            RightTree = self.dfs(val + 1, end)
+            for i in LeftTree:
+                for j in RightTree:
+                    root = TreeNode(val)
+                    root.left = i
+                    root.right = j
+                    res.append(root)
+        return res
+
+
+# 73. Count and Say
+class Solution:
+    # @return a string
+    def countAndSay(self, n):
+        if n == 0: return ''
+
+        s = '1'
+        for i in range(1, n):
+            s = self.count(s)
+
+        return s
+
+    def count(self, s):
+        res = ''
+        i = 0
+        lenS = len(s)
+        count = 1
+        while i < lenS:
+            while i + 1 < lenS and s[i+1] == s[i]:
+                count += 1
+                i += 1
+            res += str(count) + s[i]
+            count = 1
+            i += 1
+
+        return res
+
+
 # 72. 
 # Definition for a  binary tree node
 # class TreeNode:
