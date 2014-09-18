@@ -31,7 +31,79 @@ __author__ = 'le0nh@rdt'
 # 73. Help | Pass
 # 74. Help | Pass 
 # 75. Fail | Pass
+# 76. Help | Pass ; use value farest to record
+# 77. Help | Pass ; no easy way, do bruteforece, but sort at first and search start at first and last.
+# 78. Fail | Pass ; root value can be negtive!
 # ================================================
+# 78. Path Sum II 
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @param sum, an integer
+    # @return a list of lists of integers
+    def pathSum(self, root, sum):
+        res = []
+        def dfs(root, target, valuelist):
+            if root.left is None and root.right is None:
+                if target == root.val:
+                    res.append(valuelist + [root.val])
+                    return
+            if root.left is not None:
+                dfs(root.left, target - root.val, valuelist + [root.val])
+            if root.right is not None:
+                dfs(root.right, target - root.val, valuelist + [root.val])
+        
+        if root is None:
+            return []
+        
+        dfs(root, sum, [])
+        return res
+
+
+# 77. 3Sum Closest
+class Solution:
+    # @return an integer
+    def threeSumClosest(self, num, target):
+        num.sort()
+        mindiff = 100000
+        res = 0
+        for i in range(len(num)):
+            left = i + 1;
+            right = len(num) - 1
+            while left < right:
+                sum = num[i] + num[left] + num[right]
+                diff = abs(sum - target)
+                if diff < mindiff: mindiff = diff; res = sum
+                if sum == target:
+                    return sum
+                elif sum < target:
+                    left += 1
+                else:
+                    right -= 1
+        return res
+    
+
+# 76. Jump Game
+class Solution:
+    # @param A, a list of integers
+    # @return a boolean
+    def canJump(self, A):
+        lenA = len(A)
+        canReach = 0
+        for i in xrange(lenA):
+            if i <= canReach:
+                canReach = max(canReach, i + A[i])
+                if canReach >= lenA - 1:
+                    return True
+        return False
+
+
 # 75. Longest Common Prefix 
 class Solution:
     # @return a string
