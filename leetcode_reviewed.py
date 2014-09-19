@@ -35,6 +35,25 @@ __author__ = 'le0nh@rdt'
 # 77. Help | Pass ; no easy way, do bruteforece, but sort at first and search start at first and last.
 # 78. Fail | Pass ; root value can be negtive!
 # ================================================
+# 79. Subsets II
+class Solution:
+    # @param num, a list of integer
+    # @return a list of lists of integer
+    def subsetsWithDup(self, S):
+        res = []
+        lenS = len(S)
+        def dfs(depth, start, valuelist):
+            if valuelist not in res:
+                res.append(valuelist)
+            if depth == len(S):
+                return
+            for i in xrange(start, lenS):
+                dfs(depth + 1, i + 1, valuelist + [S[i]])
+        S.sort()
+        dfs(0, 0, [])
+        return res
+
+
 # 78. Path Sum II 
 # Definition for a  binary tree node
 # class TreeNode:
