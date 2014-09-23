@@ -37,7 +37,107 @@ __author__ = 'le0nh@rdt'
 # 79. Fail | Pass
 # 80. Fail | Pass
 # 81. Help | Fail | Pass ; use self.pre to track the previous node to current root, compare their value.
+# 82. Pass
+# 83. Pass
+# 84. Pass
+# 85. Fail | Pass
 # ================================================
+# 85. Add Binary
+class Solution:
+    # @param a, a string
+    # @param b, a string
+    # @return a string
+    def addBinary(self, a, b):
+        a = a[::-1]
+        b = b[::-1]
+
+        length = max(len(a), len(b))
+        a += '0' * (length - len(a))
+        b += '0' * (length - len(b))
+
+        res = [0 for i in xrange(length + 1)]
+        for i in xrange(length):
+            res[i] = int(a[i]) + int(b[i])
+
+        carry = 0
+        for i in xrange(length + 1):
+            res[i] += carry
+            carry = res[i] // 2
+            res[i] = res[i] % 2
+
+        end = length
+        while end > 0:
+            if res[end] == 0:
+                end -= 1
+            else:
+                break
+        return ''.join(str(s) for s in res[end::-1])
+
+
+# 84. Letter Combinations of a Phone Number 
+class Solution:
+    # @return a list of strings, [s1, s2]
+    def letterCombinations(self, digits):
+        dict = {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'}
+        self.res = [""]
+
+        def dfs(digits, valuelist):
+            if digits == '':
+                # self.res += valuelist
+                self.res = valuelist
+                return
+            tmp = []
+            if len(valuelist) == 0:
+                for c in dict[digits[0]]:
+                    tmp.append(c)
+            else:
+                for c in dict[digits[0]]:
+                    for s in valuelist:
+                        tmp.append(s + c)
+            dfs(digits[1:], tmp)
+
+        dfs(digits, [""])
+        return self.res
+
+
+
+# 83. Combination Sum
+class Solution:
+    # @param candidates, a list of integers
+    # @param target, integer
+    # @return a list of lists of integers
+    def combinationSum(self, candidates, target):
+        res = []
+        candidates.sort()
+        lenCandidates = len(candidates)
+        def dfs(start, target, valuelist):
+            if target == 0:
+                res.append(valuelist)
+            elif target < 0:
+                return
+            for i in xrange(start, lenCandidates):
+                dfs(i, target - candidates[i], valuelist + [candidates[i]])
+
+        dfs(0, target, [])
+        return res
+
+
+# 82. Triangle
+class Solution:
+    # @param triangle, a list of lists of integers
+    # @return an integer
+    def minimumTotal(self, triangle):
+        if len(triangle) == 1:
+            return triangle[0][0]
+
+        for ii in range(1, len(triangle)):
+            triangle[ii][0] += triangle[ii-1][0]
+            for jj in range(1, len(triangle[ii]) - 1):
+                triangle[ii][jj] += min(triangle[ii-1][jj-1], triangle[ii-1][jj])
+            triangle[ii][-1] += triangle[ii-1][-1]
+
+        return min(triangle[-1])
+
 
 # 81. Recover Binary Search Tree
 # Definition for a  binary tree node
