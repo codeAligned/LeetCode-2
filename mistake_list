@@ -1,5 +1,7 @@
 111. Merge k Sorted List: 第一次timeout，使用的方法是不短将下一个list合并过来; 第一次接触用堆结构。
 
+81. Recover Binary Search Tree: 用一个pre（其实是root的pre node）指针定位inorder遍历时不符合规则的node pair中的前一个（pre和root不符合递增规律）
+
 77. 3Sum Closest: 没有在worst case时复杂度较低的方法，但是小技巧是先排序，在起始于剩余数组的头和尾开始计算2Sum
 
 76. Jump Game: 用一个farest值来记录一个点最远能到哪里，这个值超过length-1就是can jump

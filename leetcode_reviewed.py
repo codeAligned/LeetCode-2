@@ -34,7 +34,80 @@ __author__ = 'le0nh@rdt'
 # 76. Help | Pass ; use value farest to record
 # 77. Help | Pass ; no easy way, do bruteforece, but sort at first and search start at first and last.
 # 78. Fail | Pass ; root value can be negtive!
+# 79. Fail | Pass
+# 80. Fail | Pass
+# 81. Help | Fail | Pass ; use self.pre to track the previous node to current root, compare their value.
 # ================================================
+
+# 81. Recover Binary Search Tree
+# Definition for a  binary tree node
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    # @param root, a tree node
+    # @return a tree node
+    def recoverTree(self, root):
+        self.first = None
+        self.second = None
+        self.pre = TreeNode(-10000)
+        self.inorder(root)
+
+        self.first.val, self.second.val = self.second.val, self.first.val
+
+        return root
+
+    def inorder(self, root):
+        if root is not None:
+            self.inorder(root.left)
+
+            if root.val < self.pre.val:
+                if self.first is None:
+                    self.first = self.pre
+                self.second = root
+            self.pre = root
+
+            self.inorder(root.right)
+
+
+# 80. Partition List
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+
+class Solution:
+    # @param head, a ListNode
+    # @param x, an integer
+    # @return a ListNode
+    def partition(self, head, x):
+        if head is None: return head
+
+        dummy1 = ListNode(0); p1 = dummy1
+        dummy2 = ListNode(1); p2 = dummy2
+        ptr = head
+
+        while ptr is not None:
+            if ptr.val < x:
+                p1.next = ptr
+                p1 = p1.next
+                ptr = p1.next
+            else:
+                p2.next = ptr
+                p2 = p2.next
+                ptr = p2.next
+
+        p1.next = dummy2.next
+        p2.next = None
+
+        return dummy1.next
+
+
 # 79. Subsets II
 class Solution:
     # @param num, a list of integer
