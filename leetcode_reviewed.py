@@ -41,7 +41,59 @@ __author__ = 'le0nh@rdt'
 # 83. Pass
 # 84. Pass
 # 85. Fail | Pass
+# 86. Fail | Pass ; see the commented line, should not use "if not in visited"
+# 87. TLE  | Pass ; cutting branches - if target < candidates[i]: return
 # ================================================
+# 87. Combination Sum II 
+class Solution:
+    # @param candidates, a list of integers
+    # @param target, integer
+    # @return a list of lists of integers
+    def combinationSum2(self, candidates, target):
+        candidates.sort()
+        lencandidates = len(candidates)
+        res = []
+
+        def dfs(start, target, valuelist):
+            if target < 0:
+                return
+            elif target == 0:
+                if valuelist not in res:
+                    res.append(valuelist)
+                return
+
+            for i in xrange(start, lencandidates):
+                if target < candidates[i]:
+                    return
+                dfs(i + 1, target - candidates[i], valuelist + [candidates[i]])
+
+        dfs(0, target, [])
+        return res
+
+
+# 86. Clone Graph
+class Solution:
+    # @param node, a undirected graph node
+    # @return a undirected graph node
+    def cloneGraph(self, node):
+        self.visited = {}
+        
+        def dfs(node):
+            if node is None:
+                return node
+            if self.visited.has_key(node):
+                return self.visited[node]
+            else:
+                clone = UndirectedGraphNode(node.label)
+                self.visited[node] = clone
+                for neighbor in node.neighbors:
+                    #if neighbor not in self.visited:
+                    clone.neighbors.append(dfs(neighbor))
+            return clone
+
+        return dfs(node)
+
+
 # 85. Add Binary
 class Solution:
     # @param a, a string
