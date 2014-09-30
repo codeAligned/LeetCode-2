@@ -44,9 +44,130 @@ __author__ = 'le0nh@rdt'
 # 86. Fail | Pass ; see the commented line, should not use "if not in visited"
 # 87. TLE  | Pass ; cutting branches - if target < candidates[i]: return
 # 88. Fail | Pass ; misunderstand the quesiton, but method is correct
-# 89. Help ; Trick is insert node to original list and extract these nodes
+# 89. Help ; Trick is insert cloned list node to original list one by one and extract these nodes
+# 90. Help | Pass ; Trick is need to stacks, one for height, one for index
+# 91. Pass
+# 92. 
 
 # ================================================
+# 91. Maximal Rectangle
+class Solution:
+    # @param matrix, a list of lists of 1 length string
+    # @return an integer
+    def maximalRectangle(self, matrix):
+        for i in xrange(len(matrix)):
+            for j in xrange(len(matrix[0])):
+                if matrix[i][j] == '1': matrix[i][j] = 1
+                else: matrix[i][j] = 0
+        for i in xrange(1, len(matrix)):
+            for j in xrange(len(matrix[0])):
+                if matrix[i][j] != 0:
+                    matrix[i][j] += matrix[i-1][j]
+        maximalRec = 0
+        for height in matrix:
+            maximalRec = max(maximalRec, self.largestRectangleArea(height))
+        return maximalRec
+    
+    def largestRectangleArea(self, height):
+        heightstack = [0]
+        indexstack = [0]
+        maxrec = 0
+        for i in range(len(height)):
+            if (not heightstack) or height[i] > heightstack[-1]:
+                heightstack.append(height[i])
+                indexstack.append(i + 1)
+            elif heightstack and height[i] < heightstack[-1]:
+                while height[i] < heightstack[-1]:
+                    maxheight = heightstack.pop()
+                    lastindex = indexstack.pop()
+                    tmprec = (i + 1 - lastindex) * maxheight
+                    maxrec = max(tmprec, maxrec)
+                heightstack.append(height[i])
+                indexstack.append(lastindex)
+
+        curr = len(height) + 1
+        while heightstack:
+            maxheight = heightstack.pop()
+            lastindex = indexstack.pop()
+            tmprec = (curr - lastindex) * maxheight
+            maxrec = max(tmprec, maxrec)
+
+        return maxrec
+
+# 90. Largest Rectangle in Histogram
+class Solution:
+    # @param height, a list of integer
+    # @return an integer
+    def largestRectangleArea(self, height):
+        heightstack = [0]
+        indexstack = [0]
+        maxrec = 0
+        for i in range(len(height)):
+            if (not heightstack) or height[i] > heightstack[-1]:
+                heightstack.append(height[i])
+                indexstack.append(i + 1)
+            elif heightstack and height[i] < heightstack[-1]:
+                while height[i] < heightstack[-1]:
+                    maxheight = heightstack.pop()
+                    lastindex = indexstack.pop()
+                    tmprec = (i + 1 - lastindex) * maxheight
+                    maxrec = max(tmprec, maxrec)
+                heightstack.append(height[i])
+                indexstack.append(lastindex)
+
+        curr = len(height) + 1
+        while heightstack:
+            maxheight = heightstack.pop()
+            lastindex = indexstack.pop()
+            tmprec = (curr - lastindex) * maxheight
+            maxrec = max(tmprec, maxrec)
+
+        return maxrec
+
+
+# 89. Copy List with Random Pointer
+# Definition for singly-linked list with a random pointer.
+# class RandomListNode:
+#     def __init__(self, x):
+#         self.label = x
+#         self.next = None
+#         self.random = None
+
+class Solution:
+    # @param head, a RandomListNode
+    # @return a RandomListNode
+    def copyRandomList(self, head):
+        if head == None:
+            return None
+        p = head
+        count = 0
+        while p:
+            # create a new node and insert between p and p.next
+            t = RandomListNode(0)
+            t.next = p.next
+            t.random = p.random
+            t.label = p.label
+            p.next = t
+            p = t.next
+            count += 1
+
+        p = head.next
+
+        for i in xrange(count):
+            if p.random:
+                p.random = p.random.next
+            if p and p.next:
+                p = p.next.next
+
+        p1, p2, newHead = head, head.next, head.next
+        for i in xrange(count - 1):
+            p1.next, p2.next = p1.next.next, p2.next.next
+            p1, p2 = p1.next, p2.next
+        p1.next, p2.next = None, None
+
+        return newHead
+
+
 # 88. Anagrams
 class Solution:
     # @param strs, a list of strings
