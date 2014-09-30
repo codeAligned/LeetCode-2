@@ -43,7 +43,32 @@ __author__ = 'le0nh@rdt'
 # 85. Fail | Pass
 # 86. Fail | Pass ; see the commented line, should not use "if not in visited"
 # 87. TLE  | Pass ; cutting branches - if target < candidates[i]: return
+# 88. Fail | Pass ; misunderstand the quesiton, but method is correct
+# 89. Help ; Trick is insert node to original list and extract these nodes
+
 # ================================================
+# 88. Anagrams
+class Solution:
+    # @param strs, a list of strings
+    # @return a list of strings
+    def anagrams(self, strs):
+        if len(strs) <= 1:
+            return []
+        
+        dict = {}
+        for s in strs:
+            key = ''.join(sorted(s))
+            if not dict.has_key(key):
+                dict[key] = [s]
+            else:
+                dict[key].append(s)
+
+        res = []
+        for k in dict:
+            if len(dict[k]) > 1:
+                res += dict[k]
+
+        return res
 # 87. Combination Sum II 
 class Solution:
     # @param candidates, a list of integers
