@@ -47,9 +47,54 @@ __author__ = 'le0nh@rdt'
 # 89. Help ; Trick is insert cloned list node to original list one by one and extract these nodes
 # 90. Help | Pass ; Trick is need to stacks, one for height, one for index
 # 91. Pass
-# 92. 
+# 92. Help | TLE : Trick is use fast ans slower pointer to seperate the original list into two list and do merge sort
 
 # ================================================
+# 92. Sort List
+class Solution:
+    # @param head, a ListNode
+    # @return a ListNode
+    def sortList(self, head):
+        return self.quicksort(head)
+
+    def quicksort(self, head):
+        if head is None or head.next is None:
+            return head
+
+        ptr = head.next;
+        head.next = None
+        smallptr = ListNode(0);
+        dummy_small = smallptr
+        largeptr = ListNode(0);
+        dummy_large = largeptr
+
+        while ptr is not None:
+            if ptr.val < head.val:
+                smallptr.next = ptr
+                smallptr = smallptr.next
+            elif ptr.val > head.val:
+                largeptr.next = ptr
+                largeptr = largeptr.next
+
+            ptr = ptr.next
+
+        smallptr.next = None
+        largeptr.next = None
+
+        newhead = self.quicksort(dummy_small.next)
+        if newhead is None:
+            newhead = head
+        else:
+            tmp = newhead
+            while tmp.next is not None:
+                tmp = tmp.next
+            tmp.next = head  # how to get the tail of small half???
+
+        head.next = self.quicksort(dummy_large.next)
+
+        return newhead
+
+
 # 91. Maximal Rectangle
 class Solution:
     # @param matrix, a list of lists of 1 length string
