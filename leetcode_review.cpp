@@ -21,6 +21,15 @@ struct TreeLinkNode {
     }
 };
 
+
+struct ListNode {
+    int val;
+    ListNode *next;
+
+    ListNode(int x) : val(x), next(NULL) {
+    }
+};
+
 class Solution {
 public:
     int singleNumber(int A[], int n) {
@@ -142,6 +151,94 @@ public:
         if (target > A[n - 1]) return n;
     }
 
+    int evalRPN(vector<string> &tokens) {
+        stack<string> s;
+
+        for (auto token : tokens) {
+            if (!is_operator(token)) {
+                s.push(token);
+            }
+            else {
+                int num2 = stoi(s.top());
+                s.pop();
+                int num1 = stoi(s.top());
+                s.pop();
+                int tmp;
+                if (token[0] == '+') {
+                    tmp = num1 + num2;
+                } else if (token[0] == '-') {
+                    tmp = num1 - num2;
+                } else if (token[0] == '*') {
+                    tmp = num1 * num2;
+                } else if (token[0] == '/') {
+                    tmp = num1 / num2;
+                }
+                s.push(to_string(tmp));
+            }
+        }
+
+        return stoi(s.top());
+    }
+
+    int maxDepth(TreeNode *root) {
+        if (root == nullptr) return 0;
+        if (root->left == nullptr && root->right == nullptr) return 1;
+        return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+    }
+
+    int maxProfit(vector<int> &prices) {
+        int res = 0;
+        for (int i = 1; i < prices.size(); ++i) {
+            int diff = prices[i] - prices[i - 1];
+            if (diff > 0) res += diff;
+        }
+        return res;
+    }
+
+    bool hasCycle(ListNode *head) {
+        ListNode *fast = head, *slow = head;
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+            if (slow == fast) return true;
+        }
+        return false;
+    }
+
+    int maxSubArray(int A[], int n) {
+        int result = INT_MIN, f = 0;
+        for (int i = 0; i < n; ++i) {
+            f = max(f + A[i], A[i]);
+            result = max(result, f);
+        }
+        return result;
+    }
+
+    ListNode *deleteDuplicates(ListNode *head) {
+        if (!head) return head;
+        ListNode dummy(head->val + 1);
+        dummy.next = head;
+
+        recur(&dummy, head);
+        return dummy.next;
+    }
+
+private:
+    bool is_operator(const string &op) {
+        return op.size() == 1 && string("+-*/").find(op) != string::npos;
+    }
+
+    void recur(ListNode *prev, ListNode *cur) {
+        if (cur == nullptr) return;
+
+        if (prev->val == cur->val) {
+            prev->next = cur->next;
+            delete cur;
+            recur(prev, prev->next);
+        } else {
+            recur(prev->next, cur->next);
+        }
+    }
 };
 
 
